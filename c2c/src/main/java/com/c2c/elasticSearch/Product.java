@@ -1,4 +1,4 @@
-package com.c2c;
+package com.c2c.elasticSearch;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -43,14 +43,14 @@ public class Product {
     @Field(type = FieldType.Text, name = "tag5")
     private String tag5;
 
-    @Field(type = FieldType.Integer, name = "user")
-    private int user;
+    @Field(type = FieldType.Text, name = "user")
+    private String user;
 
 
     public Product() {
     }
 
-    public Product(String idproduct, String name, String description, double price, Date date, String place, String tag1, String tag2, String tag3, String tag4, String tag5, int user) {
+    public Product(String idproduct, String name, String description, double price, Date date, String place, String tag1, String tag2, String tag3, String tag4, String tag5, String user) {
         this.idproduct = idproduct;
         this.name = name;
         this.description = description;
@@ -153,11 +153,11 @@ public class Product {
         this.tag5 = tag5;
     }
 
-    public int getUser() {
+    public String getUser() {
         return this.user;
     }
 
-    public void setUser(int user) {
+    public void setUser(String user) {
         this.user = user;
     }
 
@@ -216,7 +216,7 @@ public class Product {
         return this;
     }
 
-    public Product user(int user) {
+    public Product user(String user) {
         setUser(user);
         return this;
     }

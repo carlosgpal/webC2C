@@ -1,4 +1,4 @@
-package com.c2c;
+package com.c2c.elasticSearch;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 public class ElasticSearchController {
+    
     @Autowired
     private ElasticSearchQuery elasticSearchQuery;
 

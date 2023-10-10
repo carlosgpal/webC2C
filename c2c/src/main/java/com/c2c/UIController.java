@@ -5,6 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import com.c2c.elasticSearch.ElasticSearchQuery;
+import com.c2c.elasticSearch.Product;
+
 import java.io.IOException;
 
 @Controller

@@ -1,4 +1,4 @@
-package com.c2c;
+package com.c2c.elasticSearch;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
