@@ -2,11 +2,11 @@ package com.c2c.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -21,14 +21,17 @@ public class User {
     @Column(length = 45, nullable = false)
     private String pass;
 
-    @Column
+    @Column(nullable = false)
     private Date lasttime;
 
-    @Column
+    @Column(nullable = false)
     private boolean isverify;
 
     @Column(length = 45)
     private String verifylink;
+
+    @OneToMany(mappedBy = "user_iduser")
+    private List<Product> products;
 
     public User() {
     }
