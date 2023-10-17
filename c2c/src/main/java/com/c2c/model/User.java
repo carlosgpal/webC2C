@@ -97,6 +97,14 @@ public class User {
         this.verifylink = verifylink;
     }
 
+    public List<Product> getProducts() {
+        return this.products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)
