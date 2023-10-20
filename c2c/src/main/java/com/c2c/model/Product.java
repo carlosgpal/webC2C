@@ -244,4 +244,8 @@ public class Product {
             "}";
     }
 
+    public Product orElse(Object object) {
+        return null;
+    }
+
 }

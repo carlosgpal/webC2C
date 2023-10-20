@@ -22,9 +22,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 // @AutoConfigureTestDatabase (connection = EmbeddedDatabaseConnection.H2)
 public class MySQLQueryTest {
     @Autowired
-    private UserInterface userItf;
+    private UserInterface userIf;
     @Autowired
-    private ProductInterface productItf;
+    private ProductInterface productIf;
 
     User john = new User("12312", "Jhon", "pass1", new Date(123213), true, "ads");
     User claire = new User("12343", "Claire", "pass2", new Date(123213), false, "ads");
@@ -51,38 +51,38 @@ public class MySQLQueryTest {
 
     @BeforeEach
     public void setUp() {
-        userItf.save(john);
-        userItf.save(claire);
-        userItf.save(juan);
-        userItf.save(fernando);
+        userIf.save(john);
+        userIf.save(claire);
+        userIf.save(juan);
+        userIf.save(fernando);
 
-        userItf.flush();
+        userIf.flush();
 
-        productItf.save(chopsticks);
-        productItf.save(product2);
-        productItf.save(product3);
-        productItf.save(product4);
-        productItf.save(product5);
-        productItf.save(toaster);
+        productIf.save(chopsticks);
+        productIf.save(product2);
+        productIf.save(product3);
+        productIf.save(product4);
+        productIf.save(product5);
+        productIf.save(toaster);
 
-        productItf.flush();
+        productIf.flush();
     }
 
     @Test
     public void testSaveUser() {
 
-        assertEquals(4, userItf.findAll().size());
+        assertEquals(4, userIf.findAll().size());
     }
 
     @Test
     public void testSaveProduct() {
 
-        assertEquals(6, productItf.findAll().size());
+        assertEquals(6, productIf.findAll().size());
     }
 
     @Test
     public void testFindUserById() {
-        User user1 = userItf.findByIduser("12343");
+        User user1 = userIf.findByIduser("12343");
 
         assertEquals("12343", user1.getIduser());
         assertEquals("Claire", user1.getName());
@@ -94,7 +94,7 @@ public class MySQLQueryTest {
 
     @Test
     public void testFindProductById() {
-        Product prod1 = productItf.findByIdproduct("1212");
+        Product prod1 = productIf.findByIdproduct("1212");
 
         assertEquals("1212", prod1.getIdproduct());
         assertEquals("chopsticks barato", prod1.getName());
@@ -117,8 +117,8 @@ public class MySQLQueryTest {
 
     @Test
     public void testFindProductByUser() {
-        User user1 = userItf.findByIduser("1111");
-        List<Product> prodList = productItf.findByUser_iduser(user1);
+        User user1 = userIf.findByIduser("1111");
+        List<Product> prodList = productIf.findByUser_iduser(user1);
 
         assertEquals("chopsticks barato", prodList.get(0).getName());
         assertEquals("product2", prodList.get(1).getName());

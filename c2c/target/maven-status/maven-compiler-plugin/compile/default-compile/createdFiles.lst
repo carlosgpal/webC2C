@@ -1,9 +1,10 @@
-com\c2c\UIController.class
 com\c2c\model\ProductInterface.class
+com\c2c\UserController.class
 com\c2c\model\User.class
 com\c2c\model\Product.class
 com\c2c\App.class
 com\c2c\elasticSearch\ElasticSearchController.class
+com\c2c\ProductController.class
 com\c2c\elasticSearch\ElasticSearchQuery.class
 com\c2c\elasticSearch\ElasticSearchConfiguration.class
 com\c2c\model\UserInterface.class

@@ -133,4 +133,8 @@ public class User {
                 "}";
     }
 
+    public User orElse(Object object) {
+        return null;
+    }
+
 }
