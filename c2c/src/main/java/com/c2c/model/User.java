@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -30,6 +32,7 @@ public class User {
     @Column(length = 45)
     private String verifylink;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user_iduser")
     private List<Product> products;
 

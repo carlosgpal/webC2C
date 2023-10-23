@@ -35,7 +35,7 @@ public class ProductController {
     // Get product by Id
     @GetMapping("/{idproduct}")
     public ResponseEntity<Product> getProductById(@PathVariable String idproduct) {
-        Product product = productIf.findByIdproduct(idproduct).orElse(null);
+        Product product = productIf.findByIdproduct(idproduct);
         if (product == null) {
             return ResponseEntity.notFound().build();
         }
@@ -52,7 +52,7 @@ public class ProductController {
     // Update a Product
     @PutMapping("/{idproduct}")
     public ResponseEntity<Product> updateProduct(@PathVariable String idproduct, @RequestBody Product updatedProduct) {
-        Product product = productIf.findByIdproduct(idproduct).orElse(null);
+        Product product = productIf.findByIdproduct(idproduct);
         if (product == null) {
             return ResponseEntity.notFound().build();
         }
@@ -79,7 +79,7 @@ public class ProductController {
     // Delete a Product
     @DeleteMapping("/{idproduct}")
     public ResponseEntity<Void> deleteProduct(@PathVariable String idproduct) {
-        Product product = productIf.findByIdproduct(idproduct).orElse(null);
+        Product product = productIf.findByIdproduct(idproduct);
         if (product == null) {
             return ResponseEntity.notFound().build();
         }

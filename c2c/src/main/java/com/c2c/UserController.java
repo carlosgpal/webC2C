@@ -35,7 +35,7 @@ public class UserController {
     // Get user by Id
     @GetMapping("/{iduser}")
     public ResponseEntity<User> getUserById(@PathVariable String iduser) {
-        User user = userIf.findByIduser(iduser).orElse(null);
+        User user = userIf.findByIduser(iduser);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
@@ -52,7 +52,7 @@ public class UserController {
     // Update a User
     @PutMapping("/{iduser}")
     public ResponseEntity<User> updateUser(@PathVariable String iduser, @RequestBody User updatedUser) {
-        User user = userIf.findById(iduser).orElse(null);
+        User user = userIf.findByIduser(iduser);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
@@ -68,7 +68,7 @@ public class UserController {
     // Delete a User
     @DeleteMapping("/{iduser}")
     public ResponseEntity<Void> deleteUser(@PathVariable String iduser) {
-        User user = userIf.findByIduser(iduser).orElse(null);
+        User user = userIf.findByIduser(iduser);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
