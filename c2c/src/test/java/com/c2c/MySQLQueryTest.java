@@ -118,7 +118,7 @@ public class MySQLQueryTest {
     @Test
     public void testFindProductByUser() {
         User user1 = userIf.findByIduser("1111");
-        List<Product> prodList = productIf.findByUser_iduser(user1);
+        List<Product> prodList = userIf.findByUser_iduser(user1);
 
         assertEquals("chopsticks barato", prodList.get(0).getName());
         assertEquals("product2", prodList.get(1).getName());

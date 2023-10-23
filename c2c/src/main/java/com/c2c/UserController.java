@@ -2,6 +2,7 @@ package com.c2c;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.c2c.model.Product;
 import com.c2c.model.User;
 import com.c2c.model.UserInterface;
 
@@ -40,6 +41,17 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(user);
+    }
+
+    // Get products by user_iduser
+    @GetMapping("/{iduser}/products")
+    public ResponseEntity<List<Product>> getProductsByUserId(@PathVariable String iduser) {
+        User user = userIf.findByIduser(iduser);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        List<Product> products = userIf.findByUser_iduser(user);
+        return ResponseEntity.ok(products);
     }
 
     // Create a New User
