@@ -10,8 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ElasticSearchConfiguration
-{
+public class ElasticSearchConfiguration {
     @Bean
     public RestClient getRestClient() {
         RestClient restClient = RestClient.builder(
@@ -20,14 +19,13 @@ public class ElasticSearchConfiguration
     }
 
     @Bean
-    public  ElasticsearchTransport getElasticsearchTransport() {
+    public ElasticsearchTransport getElasticsearchTransport() {
         return new RestClientTransport(
                 getRestClient(), new JacksonJsonpMapper());
     }
 
-
     @Bean
-    public ElasticsearchClient getElasticsearchClient(){
+    public ElasticsearchClient getElasticsearchClient() {
         ElasticsearchClient client = new ElasticsearchClient(getElasticsearchTransport());
         return client;
     }

@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserInterface extends JpaRepository<User, String>{
-    //select fields from user where userid = [param]
+public interface UserInterface extends JpaRepository<User, String> {
+    // select fields from user where userid = [param]
     User findByIduser(String iduser);
 
     @Query("SELECT p FROM Product p WHERE p.user_iduser = ?1")

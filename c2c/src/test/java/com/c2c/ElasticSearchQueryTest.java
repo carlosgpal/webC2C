@@ -1,60 +1,60 @@
-// package com.c2c;
+package com.c2c;
 
-// import org.aspectj.lang.annotation.Before;
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
-// import org.mockito.InjectMocks;
-// import org.mockito.Mock;
-// import org.mockito.MockitoAnnotations;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-// import com.c2c.elasticSearch.ElasticSearchQuery;
-// import com.c2c.elasticSearch.Product;
+import com.c2c.elasticSearch.ElasticSearchQuery;
+import com.c2c.elasticSearch.Product;
 
-// import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 
-// import static org.junit.jupiter.api.Assertions.assertEquals;
-// import java.io.IOException;
-// import java.util.ArrayList;
-// import java.util.Date;
-// import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
 
-// public class ElasticSearchQueryTest {
-//      @InjectMocks
-//     private ElasticSearchQuery elasticSearchQuery;
+@SpringBootTest
+class ElasticSearchQueryTest {
 
-//     @Mock
-//     private ElasticsearchClient client; // Assuming this is a dependency in ElasticSearchQuery that interacts with Elasticsearch.
+    @Autowired
+    private ElasticSearchQuery elasticSearchQuery;
 
-//     @BeforeEach
-//     public void setup() {
-//         MockitoAnnotations.openMocks(this);
-//     }
+    private Product testProduct;
 
-//     @Test
-//     public void testCreateOrUpdateDocument() throws IOException {
-//         Product product = new Product("12", "TestProduct", "This is a test product.", 1.2, new Date(123), "TestPlace", "tag1", "tag2", "tag3", "tag4", "tag5", "TestUser");
-//         String response = elasticSearchQuery.createOrUpdateDocument(product);
-//         assertEquals("Document created/updated successfully", response);
-//     }
+    @BeforeEach
+    public void setUp() {
+        testProduct = new Product("1", "testproduct", "description", 5.5, new Date(1122), "place", "tagprueba",
+                "tagprueba", "tagprueba", "tagprueba", "tagprueba", "1212");
+    }
 
-//     @Test
-//     public void testGetDocumentById() throws IOException {
-//         Product expectedProduct = new Product("12", "TestProduct", "This is a test product.", 1.2, new Date(123), "TestPlace", "tag1", "tag2", "tag3", "tag4", "tag5", "TestUser");
-//         Product actualProduct = elasticSearchQuery.getDocumentById("1");
-//         assertEquals(expectedProduct, actualProduct);
-//     }
+    @Test
+    public void testCreateOrUpdateDocument() throws IOException {
+        String result = elasticSearchQuery.createOrUpdateDocument(testProduct);
+        assertEquals("Document has been successfully updated.", result);
+    }
 
-//     @Test
-//     public void testDeleteDocumentById() throws IOException {
-//         String response = elasticSearchQuery.deleteDocumentById("12");
-//         assertEquals("Document deleted successfully", response);
-//     }
+    @Test
+    public void testGetDocumentById() throws IOException {
+        elasticSearchQuery.createOrUpdateDocument(testProduct);
 
-//     @Test
-//     public void testSearchAllDocuments() throws IOException {
-//         List<Product> expectedProducts = new ArrayList<>();
-//         expectedProducts.add(new Product("12", "TestProduct", "This is a test product.", 1.2, new Date(123), "TestPlace", "tag1", "tag2", "tag3", "tag4", "tag5", "TestUser"));
-//         List<Product> actualProducts = elasticSearchQuery.searchAllDocuments();
-//         assertEquals(expectedProducts, actualProducts);
-//     }
-// }
+        Product resultProduct = elasticSearchQuery.getDocumentById(testProduct.getIdproduct());
+        assertEquals(testProduct.getName(), resultProduct.getName());
+    }
+
+    @Test
+    public void testDeleteDocumentById() throws IOException {
+        elasticSearchQuery.createOrUpdateDocument(testProduct);
+
+        String result = elasticSearchQuery.deleteDocumentById(testProduct.getIdproduct());
+        assertEquals("Product with id " + testProduct.getIdproduct() + " has been deleted.", result);
+    }
+
+    @Test
+    public void testSearchAllDocuments() throws IOException {
+        elasticSearchQuery.createOrUpdateDocument(testProduct);
+
+        List<Product> products = elasticSearchQuery.searchAllDocuments();
+        assertTrue(products.stream().anyMatch(p -> p.getIdproduct().equals(testProduct.getIdproduct())));
+    }
+}

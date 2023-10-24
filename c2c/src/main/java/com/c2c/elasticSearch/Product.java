@@ -46,11 +46,11 @@ public class Product {
     @Field(type = FieldType.Text, name = "user")
     private String user;
 
-
     public Product() {
     }
 
-    public Product(String idproduct, String name, String description, double price, Date date, String place, String tag1, String tag2, String tag3, String tag4, String tag5, String user) {
+    public Product(String idproduct, String name, String description, double price, Date date, String place,
+            String tag1, String tag2, String tag3, String tag4, String tag5, String user) {
         this.idproduct = idproduct;
         this.name = name;
         this.description = description;
@@ -229,7 +229,12 @@ public class Product {
             return false;
         }
         Product product = (Product) o;
-        return Objects.equals(idproduct, product.idproduct) && Objects.equals(name, product.name) && Objects.equals(description, product.description) && price == product.price && Objects.equals(date, product.date) && Objects.equals(place, product.place) && Objects.equals(tag1, product.tag1) && Objects.equals(tag2, product.tag2) && Objects.equals(tag3, product.tag3) && Objects.equals(tag4, product.tag4) && Objects.equals(tag5, product.tag5) && user == product.user;
+        return Objects.equals(idproduct, product.idproduct) && Objects.equals(name, product.name)
+                && Objects.equals(description, product.description) && price == product.price
+                && Objects.equals(date, product.date) && Objects.equals(place, product.place)
+                && Objects.equals(tag1, product.tag1) && Objects.equals(tag2, product.tag2)
+                && Objects.equals(tag3, product.tag3) && Objects.equals(tag4, product.tag4)
+                && Objects.equals(tag5, product.tag5) && user == product.user;
     }
 
     @Override
@@ -240,19 +245,19 @@ public class Product {
     @Override
     public String toString() {
         return "{" +
-            " idproduct='" + getIdproduct() + "'" +
-            ", name='" + getName() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", price='" + getPrice() + "'" +
-            ", date='" + getDate() + "'" +
-            ", place='" + getPlace() + "'" +
-            ", tag1='" + getTag1() + "'" +
-            ", tag2='" + getTag2() + "'" +
-            ", tag3='" + getTag3() + "'" +
-            ", tag4='" + getTag4() + "'" +
-            ", tag5='" + getTag5() + "'" +
-            ", user='" + getUser() + "'" +
-            "}";
+                " idproduct='" + getIdproduct() + "'" +
+                ", name='" + getName() + "'" +
+                ", description='" + getDescription() + "'" +
+                ", price='" + getPrice() + "'" +
+                ", date='" + getDate() + "'" +
+                ", place='" + getPlace() + "'" +
+                ", tag1='" + getTag1() + "'" +
+                ", tag2='" + getTag2() + "'" +
+                ", tag3='" + getTag3() + "'" +
+                ", tag4='" + getTag4() + "'" +
+                ", tag5='" + getTag5() + "'" +
+                ", user='" + getUser() + "'" +
+                "}";
     }
-    
+
 }

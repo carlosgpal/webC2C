@@ -24,7 +24,7 @@ public class UserController {
 
     @Autowired
     private UserInterface userIf;
-    
+
     // Get all users
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {

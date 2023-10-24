@@ -33,7 +33,7 @@ public class Product {
 
     @Column(length = 45, nullable = true)
     private String image2;
-    
+
     @Column(length = 45, nullable = true)
     private String image3;
 
@@ -42,13 +42,13 @@ public class Product {
 
     @Column(length = 45, nullable = true)
     private String image5;
-    
+
     @Column(length = 45, nullable = true)
     private String tag1;
 
     @Column(length = 45, nullable = true)
     private String tag2;
-    
+
     @Column(length = 45, nullable = true)
     private String tag3;
 
@@ -65,7 +65,9 @@ public class Product {
     public Product() {
     }
 
-    public Product(String idproduct, String name, String description, double price, Date date, String place, String image1, String image2, String image3, String image4, String image5, String tag1, String tag2, String tag3, String tag4, String tag5, User user_iduser) {
+    public Product(String idproduct, String name, String description, double price, Date date, String place,
+            String image1, String image2, String image3, String image4, String image5, String tag1, String tag2,
+            String tag3, String tag4, String tag5, User user_iduser) {
         this.idproduct = idproduct;
         this.name = name;
         this.description = description;
@@ -224,24 +226,24 @@ public class Product {
     @Override
     public String toString() {
         return "{" +
-            " idproduct='" + getIdproduct() + "'" +
-            ", name='" + getName() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", price='" + getPrice() + "'" +
-            ", date='" + getDate() + "'" +
-            ", place='" + getPlace() + "'" +
-            ", image1='" + getImage1() + "'" +
-            ", image2='" + getImage2() + "'" +
-            ", image3='" + getImage3() + "'" +
-            ", image4='" + getImage4() + "'" +
-            ", image5='" + getImage5() + "'" +
-            ", tag1='" + getTag1() + "'" +
-            ", tag2='" + getTag2() + "'" +
-            ", tag3='" + getTag3() + "'" +
-            ", tag4='" + getTag4() + "'" +
-            ", tag5='" + getTag5() + "'" +
-            ", user_iduser='" + getUser_iduser() + "'" +
-            "}";
+                " idproduct='" + getIdproduct() + "'" +
+                ", name='" + getName() + "'" +
+                ", description='" + getDescription() + "'" +
+                ", price='" + getPrice() + "'" +
+                ", date='" + getDate() + "'" +
+                ", place='" + getPlace() + "'" +
+                ", image1='" + getImage1() + "'" +
+                ", image2='" + getImage2() + "'" +
+                ", image3='" + getImage3() + "'" +
+                ", image4='" + getImage4() + "'" +
+                ", image5='" + getImage5() + "'" +
+                ", tag1='" + getTag1() + "'" +
+                ", tag2='" + getTag2() + "'" +
+                ", tag3='" + getTag3() + "'" +
+                ", tag4='" + getTag4() + "'" +
+                ", tag5='" + getTag5() + "'" +
+                ", user_iduser='" + getUser_iduser() + "'" +
+                "}";
     }
 
     public Product orElse(Object object) {
