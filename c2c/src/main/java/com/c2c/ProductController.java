@@ -2,7 +2,6 @@ package com.c2c;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.c2c.elasticSearch.ElasticSearchQuery;
 import com.c2c.model.Product;
 import com.c2c.model.ProductInterface;
 

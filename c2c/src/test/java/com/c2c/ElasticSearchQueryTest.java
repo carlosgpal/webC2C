@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.c2c.elasticSearch.ElasticSearchQuery;
 import com.c2c.elasticSearch.Product;
@@ -15,6 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class ElasticSearchQueryTest {
 
     @Autowired
@@ -24,14 +26,15 @@ class ElasticSearchQueryTest {
 
     @BeforeEach
     public void setUp() {
-        testProduct = new Product("1", "testproduct", "description", 5.5, new Date(1122), "place", "tagprueba",
+        testProduct = new Product("8", "testproduct8", "description", 5.5, new Date(1122), "place", "tagprueba",
                 "tagprueba", "tagprueba", "tagprueba", "tagprueba", "1212");
     }
 
     @Test
     public void testCreateOrUpdateDocument() throws IOException {
         String result = elasticSearchQuery.createOrUpdateDocument(testProduct);
-        assertEquals("Document has been successfully updated.", result);
+        assertTrue(result.equals("Document has been successfully created.")
+                || result.equals("Document has been successfully updated."));
     }
 
     @Test
@@ -40,6 +43,15 @@ class ElasticSearchQueryTest {
 
         Product resultProduct = elasticSearchQuery.getDocumentById(testProduct.getIdproduct());
         assertEquals(testProduct.getName(), resultProduct.getName());
+        assertEquals(testProduct.getDescription(), resultProduct.getDescription());
+        assertEquals(testProduct.getPrice(), resultProduct.getPrice());
+        assertEquals(testProduct.getPlace(), resultProduct.getPlace());
+        assertEquals(testProduct.getTag1(), resultProduct.getTag1());
+        assertEquals(testProduct.getTag2(), resultProduct.getTag2());
+        assertEquals(testProduct.getTag3(), resultProduct.getTag3());
+        assertEquals(testProduct.getTag4(), resultProduct.getTag4());
+        assertEquals(testProduct.getTag5(), resultProduct.getTag5());
+        assertEquals(testProduct.getUser(), resultProduct.getUser());
     }
 
     @Test
