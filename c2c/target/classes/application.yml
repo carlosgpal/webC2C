@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+elasticsearch:
+  host: localhost
+  port: 9200
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/mydb
+    username: root
+    password: salchichon

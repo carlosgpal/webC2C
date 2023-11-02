@@ -22,11 +22,12 @@ class ElasticSearchQueryTest {
     @Autowired
     private ElasticSearchQuery elasticSearchQuery;
 
+
     private Product testProduct;
 
     @BeforeEach
     public void setUp() {
-        testProduct = new Product("8", "testproduct8", "description", 5.5, new Date(1122), "place", "tagprueba",
+        testProduct = new Product("9", "testproduct9", "description112", 5.5, new Date(1122), "place", "tagprueba",
                 "tagprueba", "tagprueba", "tagprueba", "tagprueba", "1212");
     }
 
