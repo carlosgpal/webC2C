@@ -27,7 +27,7 @@ class ElasticSearchQueryTest {
 
     @BeforeEach
     public void setUp() {
-        testProduct = new Product("9", "testproduct9", "description112", 5.5, new Date(1122), "place", "tagprueba",
+        testProduct = new Product("13", "testproduct13", "description112", 5.5, new Date(1122), "place", "tagprueba",
                 "tagprueba", "tagprueba", "tagprueba", "tagprueba", "1212");
     }
 

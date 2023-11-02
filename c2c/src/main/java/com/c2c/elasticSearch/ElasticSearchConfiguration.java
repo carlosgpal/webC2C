@@ -1,41 +1,39 @@
 package com.c2c.elasticSearch;
 
+import com.c2c.config.ElasticsearchProperties;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ElasticSearchConfiguration {
 
-    @Value("${elasticsearch.host}")
-    private String elasticsearchHost;
+    private final ElasticsearchProperties elasticsearchProperties;
 
-    @Value("${elasticsearch.port}")
-    private int elasticsearchPort;
-
-    @Bean
-    public RestClient getRestClient() {
-        RestClient restClient = RestClient.builder(
-                new HttpHost(elasticsearchHost, elasticsearchPort)).build();
-        return restClient;
+    public ElasticSearchConfiguration(ElasticsearchProperties elasticsearchProperties) {
+        this.elasticsearchProperties = elasticsearchProperties;
     }
 
     @Bean
-    public ElasticsearchTransport getElasticsearchTransport() {
+    public RestClient restClient() {
+        return RestClient.builder(
+                new HttpHost(elasticsearchProperties.getHost(), elasticsearchProperties.getPort())
+        ).build();
+    }
+
+    @Bean
+    public ElasticsearchTransport elasticsearchTransport() {
         return new RestClientTransport(
-                getRestClient(), new JacksonJsonpMapper());
+                restClient(), new JacksonJsonpMapper());
     }
 
     @Bean
-    public ElasticsearchClient getElasticsearchClient() {
-        ElasticsearchClient client = new ElasticsearchClient(getElasticsearchTransport());
-        return client;
+    public ElasticsearchClient elasticsearchClient() {
+        return new ElasticsearchClient(elasticsearchTransport());
     }
-
 }

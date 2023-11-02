@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.c2c.MySQLQueryTest
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.925 s - in com.c2c.MySQLQueryTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.749 s - in com.c2c.MySQLQueryTest
