@@ -19,7 +19,7 @@ public class ElasticSearchQuery {
 
     private final String indexName = "products";
 
-    public String createOrUpdateDocument(Product product) throws IOException {
+    public String createOrUpdateDocument(ProductElastic product) throws IOException {
 
         IndexResponse response = elasticsearchClient.index(i -> i
                 .index(indexName)
@@ -33,12 +33,12 @@ public class ElasticSearchQuery {
         return new StringBuilder("Error while performing the operation.").toString();
     }
 
-    public Product getDocumentById(String productId) throws IOException {
-        Product product = null;
-        GetResponse<Product> response = elasticsearchClient.get(g -> g
+    public ProductElastic getDocumentById(String productId) throws IOException {
+        ProductElastic product = null;
+        GetResponse<ProductElastic> response = elasticsearchClient.get(g -> g
                 .index(indexName)
                 .id(productId),
-                Product.class);
+                ProductElastic.class);
 
         if (response.found()) {
             product = response.source();
@@ -63,16 +63,16 @@ public class ElasticSearchQuery {
 
     }
 
-    public List<Product> searchAllDocuments() throws IOException {
+    public List<ProductElastic> searchAllDocuments() throws IOException {
 
         SearchRequest searchRequest = SearchRequest.of(s -> s.index(indexName));
-        SearchResponse searchResponse = elasticsearchClient.search(searchRequest, Product.class);
+        SearchResponse searchResponse = elasticsearchClient.search(searchRequest, ProductElastic.class);
         List<Hit> hits = searchResponse.hits().hits();
-        List<Product> products = new ArrayList<>();
+        List<ProductElastic> products = new ArrayList<>();
         for (Hit object : hits) {
 
-            System.out.print(((Product) object.source()));
-            products.add((Product) object.source());
+            System.out.print(((ProductElastic) object.source()));
+            products.add((ProductElastic) object.source());
 
         }
         return products;

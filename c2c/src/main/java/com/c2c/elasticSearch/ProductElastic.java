@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @Document(indexName = "products")
-public class Product {
+public class ProductElastic {
     @Id
     private String idproduct;
 
@@ -46,10 +46,10 @@ public class Product {
     @Field(type = FieldType.Text, name = "user")
     private String user;
 
-    public Product() {
+    public ProductElastic() {
     }
 
-    public Product(String idproduct, String name, String description, double price, Date date, String place,
+    public ProductElastic(String idproduct, String name, String description, double price, Date date, String place,
             String tag1, String tag2, String tag3, String tag4, String tag5, String user) {
         this.idproduct = idproduct;
         this.name = name;
@@ -161,62 +161,62 @@ public class Product {
         this.user = user;
     }
 
-    public Product idproduct(String idproduct) {
+    public ProductElastic idproduct(String idproduct) {
         setIdproduct(idproduct);
         return this;
     }
 
-    public Product name(String name) {
+    public ProductElastic name(String name) {
         setName(name);
         return this;
     }
 
-    public Product description(String description) {
+    public ProductElastic description(String description) {
         setDescription(description);
         return this;
     }
 
-    public Product price(double price) {
+    public ProductElastic price(double price) {
         setPrice(price);
         return this;
     }
 
-    public Product date(Date date) {
+    public ProductElastic date(Date date) {
         setDate(date);
         return this;
     }
 
-    public Product place(String place) {
+    public ProductElastic place(String place) {
         setPlace(place);
         return this;
     }
 
-    public Product tag1(String tag1) {
+    public ProductElastic tag1(String tag1) {
         setTag1(tag1);
         return this;
     }
 
-    public Product tag2(String tag2) {
+    public ProductElastic tag2(String tag2) {
         setTag2(tag2);
         return this;
     }
 
-    public Product tag3(String tag3) {
+    public ProductElastic tag3(String tag3) {
         setTag3(tag3);
         return this;
     }
 
-    public Product tag4(String tag4) {
+    public ProductElastic tag4(String tag4) {
         setTag4(tag4);
         return this;
     }
 
-    public Product tag5(String tag5) {
+    public ProductElastic tag5(String tag5) {
         setTag5(tag5);
         return this;
     }
 
-    public Product user(String user) {
+    public ProductElastic user(String user) {
         setUser(user);
         return this;
     }
@@ -225,10 +225,10 @@ public class Product {
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof Product)) {
+        if (!(o instanceof ProductElastic)) {
             return false;
         }
-        Product product = (Product) o;
+        ProductElastic product = (ProductElastic) o;
         return Objects.equals(idproduct, product.idproduct) && Objects.equals(name, product.name)
                 && Objects.equals(description, product.description) && price == product.price
                 && Objects.equals(date, product.date) && Objects.equals(place, product.place)

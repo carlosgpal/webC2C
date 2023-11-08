@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.c2c.elasticSearch.ElasticSearchQuery;
-import com.c2c.elasticSearch.Product;
+import com.c2c.elasticSearch.ProductElastic;
 
 import java.io.IOException;
 import java.util.Date;
@@ -23,11 +23,11 @@ class ElasticSearchQueryTest {
     private ElasticSearchQuery elasticSearchQuery;
 
 
-    private Product testProduct;
+    private ProductElastic testProduct;
 
     @BeforeEach
     public void setUp() {
-        testProduct = new Product("13", "testproduct13", "description112", 5.5, new Date(1122), "place", "tagprueba",
+        testProduct = new ProductElastic("13", "testproduct13", "description112", 5.5, new Date(1122), "place", "tagprueba",
                 "tagprueba", "tagprueba", "tagprueba", "tagprueba", "1212");
     }
 
@@ -42,7 +42,7 @@ class ElasticSearchQueryTest {
     public void testGetDocumentById() throws IOException {
         elasticSearchQuery.createOrUpdateDocument(testProduct);
 
-        Product resultProduct = elasticSearchQuery.getDocumentById(testProduct.getIdproduct());
+        ProductElastic resultProduct = elasticSearchQuery.getDocumentById(testProduct.getIdproduct());
         assertEquals(testProduct.getName(), resultProduct.getName());
         assertEquals(testProduct.getDescription(), resultProduct.getDescription());
         assertEquals(testProduct.getPrice(), resultProduct.getPrice());
@@ -67,7 +67,7 @@ class ElasticSearchQueryTest {
     public void testSearchAllDocuments() throws IOException {
         elasticSearchQuery.createOrUpdateDocument(testProduct);
 
-        List<Product> products = elasticSearchQuery.searchAllDocuments();
+        List<ProductElastic> products = elasticSearchQuery.searchAllDocuments();
         assertTrue(products.stream().anyMatch(p -> p.getIdproduct().equals(testProduct.getIdproduct())));
     }
 }

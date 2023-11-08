@@ -12,7 +12,6 @@ public class SpringProperties {
     private Jpa jpa;
     private Datasource datasource;
 
-    // Getters y setters
     public Jpa getJpa() {
         return jpa;
     }
@@ -45,7 +44,6 @@ public class SpringProperties {
             private String ddlAuto;
             private Map<String, Object> properties = new HashMap<>();
 
-            // Getters y setters
             public String getDdlAuto() {
                 return ddlAuto;
             }
@@ -69,7 +67,6 @@ public class SpringProperties {
         private String username;
         private String password;
 
-        // Getters y setters
         public String getUrl() {
             return url;
         }

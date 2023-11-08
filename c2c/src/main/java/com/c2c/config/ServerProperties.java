@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 public class ServerProperties {
     private int port;
 
-    // Getters y setters
     public int getPort() {
         return port;
     }
