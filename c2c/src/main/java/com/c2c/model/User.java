@@ -1,13 +1,15 @@
 package com.c2c.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,11 +22,14 @@ public class User {
     @Column(length = 45, nullable = false, unique = true)
     private String name;
 
+    @Column(length = 45, nullable = false, unique = true)
+    private String email;
+
     @Column(length = 45, nullable = false)
     private String pass;
 
     @Column(nullable = false)
-    private Date lasttime;
+    private LocalDateTime lasttime;
 
     @Column(nullable = false)
     private boolean isverify;
@@ -32,16 +37,39 @@ public class User {
     @Column(length = 45)
     private String verifylink;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "user_iduser")
-    private List<Product> products;
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(name = "user_has_product", joinColumns = { @JoinColumn(name = "user_iduser") }, inverseJoinColumns = {
+            @JoinColumn(name = "product_idproduct") })
+    private List<Product> products = new ArrayList<Product>();
+
+    public void addProduct(Product product) {
+        products.add(product);
+        product.getUsers().add(this);
+    }
+    public void removeProduct(Product product) {
+        products.remove(product);
+        product.getUsers().remove(this);
+    }
 
     public User() {
     }
 
-    public User(String iduser, String name, String pass, Date lasttime, boolean isverify, String verifylink) {
+    public User(String iduser, String name, String email, String pass, LocalDateTime lasttime, boolean isverify, String verifylink,
+            List<Product> products) {
         this.iduser = iduser;
         this.name = name;
+        this.email = email;
+        this.pass = pass;
+        this.lasttime = lasttime;
+        this.isverify = isverify;
+        this.verifylink = verifylink;
+        this.products = products;
+    }
+
+    public User(String iduser, String name, String email, String pass, LocalDateTime lasttime, boolean isverify, String verifylink) {
+        this.iduser = iduser;
+        this.name = name;
+        this.email = email;
         this.pass = pass;
         this.lasttime = lasttime;
         this.isverify = isverify;
@@ -64,6 +92,14 @@ public class User {
         this.name = name;
     }
 
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPass() {
         return this.pass;
     }
@@ -72,11 +108,11 @@ public class User {
         this.pass = pass;
     }
 
-    public Date getLasttime() {
+    public LocalDateTime getLasttime() {
         return this.lasttime;
     }
 
-    public void setLasttime(Date lasttime) {
+    public void setLasttime(LocalDateTime lasttime) {
         this.lasttime = lasttime;
     }
 
@@ -109,6 +145,20 @@ public class User {
     }
 
     @Override
+    public String toString() {
+        return "{" +
+            " iduser='" + getIduser() + "'" +
+            ", name='" + getName() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", pass='" + getPass() + "'" +
+            ", lasttime='" + getLasttime() + "'" +
+            ", isverify='" + isIsverify() + "'" +
+            ", verifylink='" + getVerifylink() + "'" +
+            ", products='" + getProducts() + "'" +
+            "}";
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (o == this)
             return true;
@@ -116,28 +166,12 @@ public class User {
             return false;
         }
         User user = (User) o;
-        return Objects.equals(iduser, user.iduser) && Objects.equals(name, user.name);
+        return Objects.equals(iduser, user.iduser) && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(pass, user.pass) && Objects.equals(lasttime, user.lasttime) && isverify == user.isverify && Objects.equals(verifylink, user.verifylink) && Objects.equals(products, user.products);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(iduser, name);
-    }
-
-    @Override
-    public String toString() {
-        return "{" +
-                " iduser='" + getIduser() + "'" +
-                ", name='" + getName() + "'" +
-                ", pass='" + getPass() + "'" +
-                ", lasttime='" + getLasttime() + "'" +
-                ", isverify='" + isIsverify() + "'" +
-                ", verifylink='" + getVerifylink() + "'" +
-                "}";
-    }
-
-    public User orElse(Object object) {
-        return null;
+        return Objects.hash(iduser, name, email, pass, lasttime, isverify, verifylink, products);
     }
 
 }

@@ -13,6 +13,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/mydb-test
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/webc2c-test
     username: root
     password: salchichon

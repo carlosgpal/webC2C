@@ -1,3 +1,1 @@
-com\c2c\ElasticSearchQueryTest.class
-com\c2c\UnitMySQLElasticTest.class
-com\c2c\MySQLQueryTest.class
+com\c2c\MySQLRepositoryTest.class
