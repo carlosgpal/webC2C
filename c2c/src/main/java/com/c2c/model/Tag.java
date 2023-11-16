@@ -16,7 +16,7 @@ public class Tag {
     private String idtag;
 
     @Column(length = 45, nullable = false)
-    private String name;    
+    private String name;
 
     @ManyToMany(mappedBy = "tags", cascade = { CascadeType.ALL })
     private List<Product> products = new ArrayList<Product>();
@@ -62,10 +62,10 @@ public class Tag {
     @Override
     public String toString() {
         return "{" +
-            " idtag='" + getIdtag() + "'" +
-            ", name='" + getName() + "'" +
-            ", products='" + getProducts() + "'" +
-            "}";
+                " idtag='" + getIdtag() + "'" +
+                ", name='" + getName() + "'" +
+                ", products='" + getProducts() + "'" +
+                "}";
     }
 
     @Override
@@ -76,7 +76,8 @@ public class Tag {
             return false;
         }
         Tag tag = (Tag) o;
-        return Objects.equals(idtag, tag.idtag) && Objects.equals(name, tag.name) && Objects.equals(products, tag.products);
+        return Objects.equals(idtag, tag.idtag) && Objects.equals(name, tag.name)
+                && Objects.equals(products, tag.products);
     }
 
     @Override

@@ -19,7 +19,7 @@ public class ProductElasticRepository {
     @Autowired
     private ElasticsearchClient elasticsearchClient;
 
-    private final String indexName = "products";
+    private final String indexName = "product";
 
     public String createOrUpdateDocument(ProductElastic product) throws IOException {
 

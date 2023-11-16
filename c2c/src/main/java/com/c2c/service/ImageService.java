@@ -6,8 +6,14 @@ import com.c2c.model.Image;
 
 public interface ImageService {
     public List<Image> getAllImages();
-    public Image getImagetById(String idproduct);
+
+    public Image getImageById(String idproduct);
+
     public Image createImage(Image newImage);
+
+    public Image createOrUpdateImage(String idimage, Image newImage);
+
     public Image updateImage(String idimage, Image newImage);
+
     public Image deleteImage(String idimage);
-} 
+}

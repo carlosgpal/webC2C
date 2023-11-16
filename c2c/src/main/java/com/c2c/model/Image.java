@@ -63,10 +63,10 @@ public class Image {
     @Override
     public String toString() {
         return "{" +
-            " idproduct='" + getIdimage() + "'" +
-            ", link='" + getLink() + "'" +
-            ", products='" + getProducts() + "'" +
-            "}";
+                " idproduct='" + getIdimage() + "'" +
+                ", link='" + getLink() + "'" +
+                ", products='" + getProducts() + "'" +
+                "}";
     }
 
     @Override
@@ -77,7 +77,8 @@ public class Image {
             return false;
         }
         Image image = (Image) o;
-        return Objects.equals(idimage, image.idimage) && Objects.equals(link, image.link) && Objects.equals(products, image.products);
+        return Objects.equals(idimage, image.idimage) && Objects.equals(link, image.link)
+                && Objects.equals(products, image.products);
     }
 
     @Override

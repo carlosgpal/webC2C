@@ -34,40 +34,45 @@ public class Product {
     private String place;
 
     @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(name = "product_has_image", joinColumns = { @JoinColumn(name = "product_idproduct") }, inverseJoinColumns = {
-            @JoinColumn(name = "image_idimage") })
+    @JoinTable(name = "product_has_image", joinColumns = {
+            @JoinColumn(name = "product_idproduct") }, inverseJoinColumns = {
+                    @JoinColumn(name = "image_idimage") })
     private List<Image> images = new ArrayList<Image>();
 
     public void addImage(Image image) {
         images.add(image);
         image.getProducts().add(this);
     }
+
     public void removeImage(Image image) {
         images.remove(image);
         image.getProducts().remove(this);
     }
 
     @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(name = "product_has_tag", joinColumns = { @JoinColumn(name = "product_idproduct") }, inverseJoinColumns = {
-            @JoinColumn(name = "tag_idtag") })
+    @JoinTable(name = "product_has_tag", joinColumns = {
+            @JoinColumn(name = "product_idproduct") }, inverseJoinColumns = {
+                    @JoinColumn(name = "tag_idtag") })
     private List<Tag> tags = new ArrayList<Tag>();
 
     public void addTag(Tag tag) {
         tags.add(tag);
         tag.getProducts().add(this);
     }
+
     public void removeTag(Tag tag) {
         tags.remove(tag);
         tag.getProducts().remove(this);
     }
 
-    @ManyToMany (cascade = { CascadeType.ALL }, mappedBy = "products")
+    @ManyToMany(cascade = { CascadeType.ALL }, mappedBy = "products")
     private List<User> users = new ArrayList<User>();
 
     public Product() {
     }
 
-    public Product(String idproduct, String name, String description, double price, LocalDateTime date, String place, List<Image> images, List<Tag> tags, List<User> users) {
+    public Product(String idproduct, String name, String description, double price, LocalDateTime date, String place,
+            List<Image> images, List<Tag> tags, List<User> users) {
         this.idproduct = idproduct;
         this.name = name;
         this.description = description;

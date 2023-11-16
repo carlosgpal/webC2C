@@ -1,11 +1,16 @@
 package com.c2c.model;
 
-import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import com.c2c.other.CustomLocalDateTimeDeserializer;
+import com.c2c.other.CustomLocalDateTimeSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,7 +29,9 @@ public class ProductElastic {
     private double price;
 
     @Field(type = FieldType.Date, name = "date", pattern = "yyyy-MM-dd HH:mm:ss")
-    private DateTime date;
+    @JsonSerialize(using = CustomLocalDateTimeSerializer.class)
+    @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
+    private LocalDateTime date;
 
     @Field(type = FieldType.Text, name = "place")
     private String place;
@@ -38,7 +45,7 @@ public class ProductElastic {
     public ProductElastic() {
     }
 
-    public ProductElastic(String idproduct, String name, String description, double price, DateTime date, String place, List<TagElastic> tags, String user) {
+    public ProductElastic(String idproduct, String name, String description, double price, LocalDateTime date, String place, List<TagElastic> tags, String user) {
         this.idproduct = idproduct;
         this.name = name;
         this.description = description;
@@ -81,11 +88,11 @@ public class ProductElastic {
         this.price = price;
     }
 
-    public DateTime getDate() {
+    public LocalDateTime getDate() {
         return this.date;
     }
 
-    public void setDate(DateTime date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

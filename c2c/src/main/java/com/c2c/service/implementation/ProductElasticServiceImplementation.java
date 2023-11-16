@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.c2c.model.ProductElastic;
 import com.c2c.repository.ProductElasticRepository;
 import com.c2c.service.ProductElasticService;
 
+@Service
 public class ProductElasticServiceImplementation implements ProductElasticService{
 
     @Autowired
@@ -26,6 +28,12 @@ public class ProductElasticServiceImplementation implements ProductElasticServic
 
     @Override
     public ProductElastic createProductElastic(ProductElastic newProduct) throws IOException {
+        productElasticRepository.createOrUpdateDocument(newProduct);
+        return newProduct;
+    }
+
+    @Override
+    public ProductElastic createOrUpdateProductElastic(String idproduct, ProductElastic newProduct) throws IOException {
         productElasticRepository.createOrUpdateDocument(newProduct);
         return newProduct;
     }

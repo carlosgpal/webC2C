@@ -46,6 +46,7 @@ public class User {
         products.add(product);
         product.getUsers().add(this);
     }
+
     public void removeProduct(Product product) {
         products.remove(product);
         product.getUsers().remove(this);
@@ -54,7 +55,8 @@ public class User {
     public User() {
     }
 
-    public User(String iduser, String name, String email, String pass, LocalDateTime lasttime, boolean isverify, String verifylink,
+    public User(String iduser, String name, String email, String pass, LocalDateTime lasttime, boolean isverify,
+            String verifylink,
             List<Product> products) {
         this.iduser = iduser;
         this.name = name;
@@ -66,7 +68,8 @@ public class User {
         this.products = products;
     }
 
-    public User(String iduser, String name, String email, String pass, LocalDateTime lasttime, boolean isverify, String verifylink) {
+    public User(String iduser, String name, String email, String pass, LocalDateTime lasttime, boolean isverify,
+            String verifylink) {
         this.iduser = iduser;
         this.name = name;
         this.email = email;
@@ -147,15 +150,15 @@ public class User {
     @Override
     public String toString() {
         return "{" +
-            " iduser='" + getIduser() + "'" +
-            ", name='" + getName() + "'" +
-            ", email='" + getEmail() + "'" +
-            ", pass='" + getPass() + "'" +
-            ", lasttime='" + getLasttime() + "'" +
-            ", isverify='" + isIsverify() + "'" +
-            ", verifylink='" + getVerifylink() + "'" +
-            ", products='" + getProducts() + "'" +
-            "}";
+                " iduser='" + getIduser() + "'" +
+                ", name='" + getName() + "'" +
+                ", email='" + getEmail() + "'" +
+                ", pass='" + getPass() + "'" +
+                ", lasttime='" + getLasttime() + "'" +
+                ", isverify='" + isIsverify() + "'" +
+                ", verifylink='" + getVerifylink() + "'" +
+                ", products='" + getProducts() + "'" +
+                "}";
     }
 
     @Override
@@ -166,7 +169,10 @@ public class User {
             return false;
         }
         User user = (User) o;
-        return Objects.equals(iduser, user.iduser) && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(pass, user.pass) && Objects.equals(lasttime, user.lasttime) && isverify == user.isverify && Objects.equals(verifylink, user.verifylink) && Objects.equals(products, user.products);
+        return Objects.equals(iduser, user.iduser) && Objects.equals(name, user.name)
+                && Objects.equals(email, user.email) && Objects.equals(pass, user.pass)
+                && Objects.equals(lasttime, user.lasttime) && isverify == user.isverify
+                && Objects.equals(verifylink, user.verifylink) && Objects.equals(products, user.products);
     }
 
     @Override

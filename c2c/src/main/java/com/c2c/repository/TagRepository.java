@@ -7,6 +7,5 @@ import com.c2c.model.Tag;
 
 @Repository
 public interface TagRepository extends JpaRepository<Tag, String> {
-    // select fields from user where idtag = [param]
     Tag findByIdtag(String idtag);
 }

@@ -2,13 +2,18 @@ package com.c2c.service.implementation;
 
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.c2c.model.Image;
 import com.c2c.repository.ImageRepository;
 import com.c2c.service.ImageService;
 
-public class ImageServiceImplementation implements ImageService{
+@Service
+public class ImageServiceImplementation implements ImageService {
 
     @Autowired
     private ImageRepository imageRepository;
@@ -19,7 +24,7 @@ public class ImageServiceImplementation implements ImageService{
     }
 
     @Override
-    public Image getImagetById(String idproduct) {
+    public Image getImageById(String idproduct) {
         return imageRepository.findById(idproduct).orElse(null);
     }
 
@@ -29,7 +34,7 @@ public class ImageServiceImplementation implements ImageService{
     }
 
     @Override
-    public Image updateImage(String idimage, Image newImage) {
+    public Image createOrUpdateImage(String idimage, Image newImage) {
         return imageRepository.findById(idimage)
                 .map(image -> {
                     image.setLink(newImage.getLink());
@@ -43,10 +48,24 @@ public class ImageServiceImplementation implements ImageService{
     }
 
     @Override
-    public Image deleteImage(String idimage) {
+    public Image updateImage(String idimage, Image newImage) {
         Image image = imageRepository.findById(idimage).orElse(null);
-        imageRepository.deleteById(idimage);
+        image.setLink(newImage.getLink());
+        image.setProducts(newImage.getProducts());
+        return imageRepository.save(image);
+    }
+
+    @Override
+    @Transactional
+    public Image deleteImage(String idimage) {
+        Image image = imageRepository.findById(idimage).orElseThrow(
+                () -> new EntityNotFoundException("Tag not found"));
+
+        image.getProducts().clear();
+        imageRepository.save(image);
+
+        imageRepository.delete(image);
         return image;
     }
-    
+
 }

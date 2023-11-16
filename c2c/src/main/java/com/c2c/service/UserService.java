@@ -6,8 +6,14 @@ import com.c2c.model.User;
 
 public interface UserService {
     public List<User> getAllUsers();
+
     public User getUserById(String iduser);
+
     public User createUser(User newUser);
+
+    public User createOrUpdateUser(String iduser, User newUser);
+
     public User updateUser(String iduser, User newUser);
+
     public User deleteUser(String iduser);
 }

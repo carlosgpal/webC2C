@@ -1,19 +1,24 @@
-package com.c2c.elasticSearch;
+package com.c2c.config;
 
-import com.c2c.config.ElasticsearchProperties;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 public class ElasticSearchConfiguration {
 
     private final ElasticsearchProperties elasticsearchProperties;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     public ElasticSearchConfiguration(ElasticsearchProperties elasticsearchProperties) {
         this.elasticsearchProperties = elasticsearchProperties;
@@ -29,7 +34,7 @@ public class ElasticSearchConfiguration {
     @Bean
     public ElasticsearchTransport elasticsearchTransport() {
         return new RestClientTransport(
-                restClient(), new JacksonJsonpMapper());
+                restClient(), new JacksonJsonpMapper(objectMapper));
     }
 
     @Bean
