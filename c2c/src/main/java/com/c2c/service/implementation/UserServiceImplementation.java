@@ -26,21 +26,30 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        List<User> users = userRepository.findAll();
+        if (users.isEmpty()) {
+            throw new EntityNotFoundException("No users found");
+        }
+        return users;
     }
 
     @Override
     public User getUserById(String iduser) {
-        return userRepository.findById(iduser).orElse(null);
+        return userRepository.findById(iduser)
+                .orElseThrow(() -> new EntityNotFoundException("User with ID: " + iduser + " not found"));
     }
 
     @Override
     public User createUser(User newUser) {
+        validateUser(newUser);
+
         return userRepository.save(newUser);
     }
 
     @Override
     public User createOrUpdateUser(String iduser, User newUser) {
+        validateUser(newUser);
+
         return userRepository.findById(iduser)
                 .map(user -> {
                     user.setName(newUser.getName());
@@ -60,22 +69,27 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public User updateUser(String iduser, User newUser) {
-        User user = userRepository.findById(iduser).orElse(null);
-        user.setName(newUser.getName());
-        user.setEmail(newUser.getEmail());
-        user.setPass(newUser.getPass());
-        user.setLasttime(newUser.getLasttime());
-        user.setIsverify(newUser.getIsverify());
-        user.setVerifylink(newUser.getVerifylink());
-        user.setProducts(newUser.getProducts());
-        return userRepository.save(user);
+        validateUser(newUser);
+
+        return userRepository.findById(iduser)
+                .map(user -> {
+                    user.setName(newUser.getName());
+                    user.setEmail(newUser.getEmail());
+                    user.setPass(newUser.getPass());
+                    user.setLasttime(newUser.getLasttime());
+                    user.setIsverify(newUser.getIsverify());
+                    user.setVerifylink(newUser.getVerifylink());
+                    user.setProducts(newUser.getProducts());
+                    return userRepository.save(user);
+                })
+                .orElseThrow(() -> new EntityNotFoundException("User with ID: " + iduser + " not found"));
     }
 
     @Override
     @Transactional
     public User deleteUser(String iduser) {
-        User user = userRepository.findById(iduser).orElseThrow(
-                () -> new EntityNotFoundException("User not found"));
+        User user = userRepository.findById(iduser)
+                .orElseThrow(() -> new EntityNotFoundException("User with ID: " + iduser + " not found"));
 
         List<Product> products = new ArrayList<>(user.getProducts());
         products.forEach(product -> {
@@ -90,7 +104,34 @@ public class UserServiceImplementation implements UserService {
         user.getProducts().clear();
         userRepository.save(user);
         userRepository.delete(user);
+
         return user;
     }
 
+    private void validateUser(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+        if (user.getIduser() == null || user.getIduser().trim().isEmpty()) {
+            throw new IllegalArgumentException("User id cannot be null or empty");
+        }
+        if (user.getName() == null || user.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("User name cannot be null or empty");
+        }
+        if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
+            throw new IllegalArgumentException("User email cannot be null or empty");
+        }
+        if (user.getPass() == null || user.getPass().trim().isEmpty()) {
+            throw new IllegalArgumentException("User pass cannot be null or empty");
+        }
+        if (user.getLasttime() == null) {
+            throw new IllegalArgumentException("User lasttime cannot be null or empty");
+        }
+        if (user.getVerifylink() == null || user.getVerifylink().trim().isEmpty()) {
+            throw new IllegalArgumentException("User verifylink cannot be null or empty");
+        }
+        if (user.getProducts() == null || user.getProducts().isEmpty()) {
+            throw new IllegalArgumentException("User products cannot be null or empty");
+        }
+    }
 }

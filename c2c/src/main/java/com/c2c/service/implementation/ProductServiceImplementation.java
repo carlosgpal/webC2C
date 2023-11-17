@@ -20,21 +20,30 @@ public class ProductServiceImplementation implements ProductService {
 
     @Override
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        List<Product> products = productRepository.findAll();
+        if (products.isEmpty()) {
+            throw new EntityNotFoundException("No products found");
+        }
+        return products;
     }
 
     @Override
     public Product getProductById(String idproduct) {
-        return productRepository.findById(idproduct).orElse(null);
+        return productRepository.findById(idproduct)
+                .orElseThrow(() -> new EntityNotFoundException("Product with ID: " + idproduct + " not found"));
     }
 
     @Override
     public Product createProduct(Product newProduct) {
+        validateProduct(newProduct);
+
         return productRepository.save(newProduct);
     }
 
     @Override
     public Product createOrUpdateProduct(String idproduct, Product newProduct) {
+        validateProduct(newProduct);
+
         return productRepository.findById(idproduct)
                 .map(product -> {
                     product.setName(newProduct.getName());
@@ -55,23 +64,28 @@ public class ProductServiceImplementation implements ProductService {
 
     @Override
     public Product updateProduct(String idproduct, Product newProduct) {
-        Product product = productRepository.findById(idproduct).orElse(null);
-        product.setName(newProduct.getName());
-        product.setDescription(newProduct.getDescription());
-        product.setPrice(newProduct.getPrice());
-        product.setDate(newProduct.getDate());
-        product.setPlace(newProduct.getPlace());
-        product.setImages(newProduct.getImages());
-        product.setTags(newProduct.getTags());
-        product.setUsers(newProduct.getUsers());
-        return productRepository.save(product);
+        validateProduct(newProduct);
+
+        return productRepository.findById(idproduct)
+                .map(product -> {
+                    product.setName(newProduct.getName());
+                    product.setDescription(newProduct.getDescription());
+                    product.setPrice(newProduct.getPrice());
+                    product.setDate(newProduct.getDate());
+                    product.setPlace(newProduct.getPlace());
+                    product.setImages(newProduct.getImages());
+                    product.setTags(newProduct.getTags());
+                    product.setUsers(newProduct.getUsers());
+                    return productRepository.save(product);
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Product with ID: " + idproduct + " not found"));
     }
 
     @Override
     @Transactional
     public Product deleteProduct(String idproduct) {
-        Product product = productRepository.findById(idproduct).orElseThrow(
-                () -> new EntityNotFoundException("Product not found"));
+        Product product = productRepository.findById(idproduct)
+                .orElseThrow(() -> new EntityNotFoundException("Product with ID: " + idproduct + " not found"));
 
         product.getUsers().clear();
         product.getImages().clear();
@@ -79,7 +93,37 @@ public class ProductServiceImplementation implements ProductService {
         productRepository.save(product);
 
         productRepository.delete(product);
+
         return product;
     }
 
+    private void validateProduct(Product product) {
+        if (product == null) {
+            throw new IllegalArgumentException("Product cannot be null");
+        }
+        if (product.getIdproduct() == null || product.getIdproduct().trim().isEmpty()) {
+            throw new IllegalArgumentException("Product id cannot be empty");
+        }
+        if (product.getName() == null || product.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Product name cannot be empty");
+        }
+        if (product.getDescription() == null || product.getDescription().trim().isEmpty()) {
+            throw new IllegalArgumentException("Product description cannot be empty");
+        }
+        if (product.getDate() == null) {
+            throw new IllegalArgumentException("Product date cannot be empty");
+        }
+        if (product.getPlace() == null || product.getPlace().trim().isEmpty()) {
+            throw new IllegalArgumentException("Product place cannot be empty");
+        }
+        if (product.getImages() == null || product.getImages().isEmpty()) {
+            throw new IllegalArgumentException("Product images cannot be empty");
+        }
+        if (product.getTags() == null || product.getTags().isEmpty()) {
+            throw new IllegalArgumentException("Product tags cannot be empty");
+        }
+        if (product.getUsers() == null || product.getUsers().isEmpty()) {
+            throw new IllegalArgumentException("Product users cannot be empty");
+        }
+    }
 }

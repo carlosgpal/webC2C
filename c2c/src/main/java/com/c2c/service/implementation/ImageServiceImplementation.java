@@ -20,21 +20,30 @@ public class ImageServiceImplementation implements ImageService {
 
     @Override
     public List<Image> getAllImages() {
-        return imageRepository.findAll();
+        List<Image> images = imageRepository.findAll();
+        if (images.isEmpty()) {
+            throw new EntityNotFoundException("No images found");
+        }
+        return images;
     }
 
     @Override
-    public Image getImageById(String idproduct) {
-        return imageRepository.findById(idproduct).orElse(null);
+    public Image getImageById(String idimage) {
+        return imageRepository.findById(idimage)
+                .orElseThrow(() -> new EntityNotFoundException("Image with ID: " + idimage + " not found"));
     }
 
     @Override
     public Image createImage(Image newImage) {
+        validateImage(newImage);
+
         return imageRepository.save(newImage);
     }
 
     @Override
     public Image createOrUpdateImage(String idimage, Image newImage) {
+        validateImage(newImage);
+
         return imageRepository.findById(idimage)
                 .map(image -> {
                     image.setLink(newImage.getLink());
@@ -49,23 +58,39 @@ public class ImageServiceImplementation implements ImageService {
 
     @Override
     public Image updateImage(String idimage, Image newImage) {
-        Image image = imageRepository.findById(idimage).orElse(null);
-        image.setLink(newImage.getLink());
-        image.setProducts(newImage.getProducts());
-        return imageRepository.save(image);
+        validateImage(newImage);
+
+        return imageRepository.findById(idimage)
+                .map(image -> {
+                    image.setLink(newImage.getLink());
+                    image.setProducts(newImage.getProducts());
+                    return imageRepository.save(image);
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Image with ID: " + idimage + " not found"));
     }
 
     @Override
     @Transactional
     public Image deleteImage(String idimage) {
-        Image image = imageRepository.findById(idimage).orElseThrow(
-                () -> new EntityNotFoundException("Tag not found"));
+        Image image = imageRepository.findById(idimage)
+                .orElseThrow(() -> new EntityNotFoundException("Image with ID: " + idimage + " not found"));
 
         image.getProducts().clear();
         imageRepository.save(image);
-
         imageRepository.delete(image);
+
         return image;
     }
 
+    private void validateImage(Image image) {
+        if (image == null) {
+            throw new IllegalArgumentException("Image cannot be null");
+        }
+        if (image.getIdimage() == null || image.getIdimage().trim().isEmpty()) {
+            throw new IllegalArgumentException("Image id cannot be null or empty");
+        }
+        if (image.getLink() == null || image.getLink().trim().isEmpty()) {
+            throw new IllegalArgumentException("Image link cannot be null or empty");
+        }
+    }
 }

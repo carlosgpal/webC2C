@@ -20,21 +20,30 @@ public class TagServiceImplementation implements TagService {
 
     @Override
     public List<Tag> getAllTags() {
-        return tagRepository.findAll();
+        List<Tag> tags = tagRepository.findAll();
+        if (tags.isEmpty()) {
+            throw new EntityNotFoundException("No tags found");
+        }
+        return tags;
     }
 
     @Override
     public Tag getTagById(String idtag) {
-        return tagRepository.findById(idtag).orElse(null);
+        return tagRepository.findById(idtag)
+                .orElseThrow(() -> new EntityNotFoundException("Tag with ID: " + idtag + " not found"));
     }
 
     @Override
     public Tag createTag(Tag newTag) {
+        validateTag(newTag);
+
         return tagRepository.save(newTag);
     }
 
     @Override
     public Tag createOrUpdateTag(String idtag, Tag newTag) {
+        validateTag(newTag);
+
         return tagRepository.findById(idtag)
                 .map(tag -> {
                     tag.setName(newTag.getName());
@@ -49,22 +58,37 @@ public class TagServiceImplementation implements TagService {
 
     @Override
     public Tag updateTag(String idtag, Tag newTag) {
-        Tag tag = tagRepository.findById(idtag).orElse(null);
-        tag.setName(newTag.getName());
-        tag.setProducts(newTag.getProducts());
-        return tagRepository.save(tag);
+        validateTag(newTag);
+
+        return tagRepository.findById(idtag).map(tag -> {
+            tag.setName(newTag.getName());
+            tag.setProducts(newTag.getProducts());
+            return tagRepository.save(tag);
+        }).orElseThrow(() -> new EntityNotFoundException("Tag with ID: " + idtag + " not found"));
     }
 
     @Override
     @Transactional
     public Tag deleteTag(String idtag) {
-        Tag tag = tagRepository.findById(idtag).orElseThrow(
-                () -> new EntityNotFoundException("Tag not found"));
+        Tag tag = tagRepository.findById(idtag)
+                .orElseThrow(() -> new EntityNotFoundException("Tag with ID: " + idtag + " not found"));
 
         tag.getProducts().clear();
         tagRepository.save(tag);
-
         tagRepository.delete(tag);
+
         return tag;
+    }
+
+    private void validateTag(Tag tag) {
+        if (tag == null) {
+            throw new IllegalArgumentException("Tag cannot be null");
+        }
+        if (tag.getIdtag() == null || tag.getIdtag().trim().isEmpty()) {
+            throw new IllegalArgumentException("Tag id cannot be null or empty");
+        }
+        if (tag.getName() == null || tag.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Tag name cannot be null or empty");
+        }
     }
 }
