@@ -27,8 +27,7 @@ public class ElasticSearchConfiguration {
     @Bean
     public RestClient restClient() {
         return RestClient.builder(
-                new HttpHost(elasticsearchProperties.getHost(), elasticsearchProperties.getPort())
-        ).build();
+                new HttpHost(elasticsearchProperties.getHost(), elasticsearchProperties.getPort())).build();
     }
 
     @Bean

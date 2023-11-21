@@ -42,43 +42,22 @@ public class ProductServiceImplementation implements ProductService {
 
     @Override
     public Product createOrUpdateProduct(String idproduct, Product newProduct) {
-        validateProduct(newProduct);
-
-        return productRepository.findById(idproduct)
-                .map(product -> {
-                    product.setName(newProduct.getName());
-                    product.setDescription(newProduct.getDescription());
-                    product.setPrice(newProduct.getPrice());
-                    product.setDate(newProduct.getDate());
-                    product.setPlace(newProduct.getPlace());
-                    product.setImages(newProduct.getImages());
-                    product.setTags(newProduct.getTags());
-                    product.setUsers(newProduct.getUsers());
-                    return productRepository.save(product);
-                })
-                .orElseGet(() -> {
-                    newProduct.setIdproduct(idproduct);
-                    return productRepository.save(newProduct);
-                });
+        if (productRepository.existsById(idproduct)) {
+            return updateProduct(idproduct, newProduct);
+        } else {
+            return createProduct(newProduct);
+        }
     }
 
     @Override
     public Product updateProduct(String idproduct, Product newProduct) {
         validateProduct(newProduct);
 
-        return productRepository.findById(idproduct)
-                .map(product -> {
-                    product.setName(newProduct.getName());
-                    product.setDescription(newProduct.getDescription());
-                    product.setPrice(newProduct.getPrice());
-                    product.setDate(newProduct.getDate());
-                    product.setPlace(newProduct.getPlace());
-                    product.setImages(newProduct.getImages());
-                    product.setTags(newProduct.getTags());
-                    product.setUsers(newProduct.getUsers());
-                    return productRepository.save(product);
-                })
+        productRepository.findById(idproduct)
                 .orElseThrow(() -> new EntityNotFoundException("Product with ID: " + idproduct + " not found"));
+
+        newProduct.setIdproduct(idproduct);
+        return productRepository.save(newProduct);
     }
 
     @Override

@@ -42,31 +42,22 @@ public class ImageServiceImplementation implements ImageService {
 
     @Override
     public Image createOrUpdateImage(String idimage, Image newImage) {
-        validateImage(newImage);
-
-        return imageRepository.findById(idimage)
-                .map(image -> {
-                    image.setLink(newImage.getLink());
-                    image.setProducts(newImage.getProducts());
-                    return imageRepository.save(image);
-                })
-                .orElseGet(() -> {
-                    newImage.setIdimage(idimage);
-                    return imageRepository.save(newImage);
-                });
+        if (imageRepository.existsById(idimage)) {
+            return updateImage(idimage, newImage);
+        } else {
+            return createImage(newImage);
+        }
     }
 
     @Override
     public Image updateImage(String idimage, Image newImage) {
         validateImage(newImage);
 
-        return imageRepository.findById(idimage)
-                .map(image -> {
-                    image.setLink(newImage.getLink());
-                    image.setProducts(newImage.getProducts());
-                    return imageRepository.save(image);
-                })
+        imageRepository.findById(idimage)
                 .orElseThrow(() -> new EntityNotFoundException("Image with ID: " + idimage + " not found"));
+
+        newImage.setIdimage(idimage);
+        return imageRepository.save(newImage);
     }
 
     @Override

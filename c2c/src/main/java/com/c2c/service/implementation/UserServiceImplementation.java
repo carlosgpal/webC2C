@@ -48,41 +48,22 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public User createOrUpdateUser(String iduser, User newUser) {
-        validateUser(newUser);
-
-        return userRepository.findById(iduser)
-                .map(user -> {
-                    user.setName(newUser.getName());
-                    user.setEmail(newUser.getEmail());
-                    user.setPass(newUser.getPass());
-                    user.setLasttime(newUser.getLasttime());
-                    user.setIsverify(newUser.getIsverify());
-                    user.setVerifylink(newUser.getVerifylink());
-                    user.setProducts(newUser.getProducts());
-                    return userRepository.save(user);
-                })
-                .orElseGet(() -> {
-                    newUser.setIduser(iduser);
-                    return userRepository.save(newUser);
-                });
+        if (userRepository.existsById(iduser)) {
+            return updateUser(iduser, newUser);
+        } else {
+            return createUser(newUser);
+        }
     }
 
     @Override
     public User updateUser(String iduser, User newUser) {
         validateUser(newUser);
 
-        return userRepository.findById(iduser)
-                .map(user -> {
-                    user.setName(newUser.getName());
-                    user.setEmail(newUser.getEmail());
-                    user.setPass(newUser.getPass());
-                    user.setLasttime(newUser.getLasttime());
-                    user.setIsverify(newUser.getIsverify());
-                    user.setVerifylink(newUser.getVerifylink());
-                    user.setProducts(newUser.getProducts());
-                    return userRepository.save(user);
-                })
+        userRepository.findById(iduser)
                 .orElseThrow(() -> new EntityNotFoundException("User with ID: " + iduser + " not found"));
+
+        newUser.setIduser(iduser);
+        return userRepository.save(newUser);
     }
 
     @Override

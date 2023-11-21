@@ -42,29 +42,22 @@ public class TagServiceImplementation implements TagService {
 
     @Override
     public Tag createOrUpdateTag(String idtag, Tag newTag) {
-        validateTag(newTag);
-
-        return tagRepository.findById(idtag)
-                .map(tag -> {
-                    tag.setName(newTag.getName());
-                    tag.setProducts(newTag.getProducts());
-                    return tagRepository.save(tag);
-                })
-                .orElseGet(() -> {
-                    newTag.setIdtag(idtag);
-                    return tagRepository.save(newTag);
-                });
+        if (tagRepository.existsById(idtag)) {
+            return updateTag(idtag, newTag);
+        } else {
+            return createTag(newTag);
+        }
     }
 
     @Override
     public Tag updateTag(String idtag, Tag newTag) {
         validateTag(newTag);
 
-        return tagRepository.findById(idtag).map(tag -> {
-            tag.setName(newTag.getName());
-            tag.setProducts(newTag.getProducts());
-            return tagRepository.save(tag);
-        }).orElseThrow(() -> new EntityNotFoundException("Tag with ID: " + idtag + " not found"));
+        tagRepository.findById(idtag)
+                .orElseThrow(() -> new EntityNotFoundException("Tag with ID: " + idtag + " not found"));
+
+        newTag.setIdtag(idtag);
+        return tagRepository.save(newTag);
     }
 
     @Override
