@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.c2c.model.Image;
 import com.c2c.model.Product;
@@ -33,7 +34,6 @@ import com.c2c.service.UserService;
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @ActiveProfiles("test")
-// Changes must be made to lazily initialize properly to test further methods
 public class MySQLServiceTest {
 
     @Autowired
@@ -54,37 +54,37 @@ public class MySQLServiceTest {
     @Autowired
     private TagService tagService;
 
-    public static User john = new User("12312", "Jhon", "Jhon@email.com", "pass1",
+    private static User john = new User("12312", "Jhon", "Jhon@email.com", "pass1",
             LocalDateTime.of(2023, 11, 13, 12, 30, 0), true, "ads");
-    public static User claire = new User("12343", "Claire", "Claire@email.com", "pass2",
+    private static User claire = new User("12343", "Claire", "Claire@email.com", "pass2",
             LocalDateTime.of(2023, 11, 13, 12, 30, 0), false, "ads");
-    public static User juan = new User("1111", "Juan", "Juan@email.com", "pass3",
+    private static User juan = new User("1111", "Juan", "Juan@email.com", "pass3",
             LocalDateTime.of(2023, 11, 13, 12, 30, 0), true, "ads");
-    public static User fernando = new User("2222", "Fernando", "Fernando@email.com", "pass4",
+    private static User fernando = new User("2222", "Fernando", "Fernando@email.com", "pass4",
             LocalDateTime.of(2023, 11, 13, 12, 30, 0), false, "ads");
-    public static Product chopsticks = new Product("1212", "chopsticks barato", "bueno bonito y barato", 0.5,
+    private static Product chopsticks = new Product("1212", "chopsticks barato", "bueno bonito y barato", 0.5,
             LocalDateTime.of(2023, 11, 13, 12, 30, 0),
             "Aquí");
-    public static Product product2 = new Product("1213", "product2", "bueno bonito y barato", 0.5,
+    private static Product product2 = new Product("1213", "product2", "bueno bonito y barato", 0.5,
             LocalDateTime.of(2023, 11, 13, 12, 30, 0), "Aquí");
-    public static Product product3 = new Product("1214", "product3", "bueno bonito y barato", 0.5,
+    private static Product product3 = new Product("1214", "product3", "bueno bonito y barato", 0.5,
             LocalDateTime.of(2023, 11, 13, 12, 30, 0), "Aquí");
-    public static Product product4 = new Product("1215", "product4", "bueno bonito y barato", 0.5,
+    private static Product product4 = new Product("1215", "product4", "bueno bonito y barato", 0.5,
             LocalDateTime.of(2023, 11, 13, 12, 30, 0), "Aquí");
-    public static Product product5 = new Product("1216", "product5", "bueno bonito y barato", 0.5,
+    private static Product product5 = new Product("1216", "product5", "bueno bonito y barato", 0.5,
             LocalDateTime.of(2023, 11, 13, 12, 30, 0), "Aquí");
-    public static Product toaster = new Product("2121", "toaster barato", "bueno bonito y barato", 0.8,
+    private static Product toaster = new Product("2121", "toaster barato", "bueno bonito y barato", 0.8,
             LocalDateTime.of(2023, 11, 13, 12, 30, 0), "Aquí");
-    public static Image image1 = new Image("123", "https://image.png");
-    public static Image image2 = new Image("124", "https://image.png");
-    public static Image image3 = new Image("125", "https://image.png");
-    public static Image image4 = new Image("126", "https://image.png");
-    public static Image image5 = new Image("127", "https://image.png");
-    public static Tag tag1 = new Tag("123", "tag");
-    public static Tag tag2 = new Tag("124", "tag");
-    public static Tag tag3 = new Tag("125", "tag");
-    public static Tag tag4 = new Tag("126", "tag");
-    public static Tag tag5 = new Tag("127", "tag");
+    private static Image image1 = new Image("123", "https://image.png");
+    private static Image image2 = new Image("124", "https://image.png");
+    private static Image image3 = new Image("125", "https://image.png");
+    private static Image image4 = new Image("126", "https://image.png");
+    private static Image image5 = new Image("127", "https://image.png");
+    private static Tag tag1 = new Tag("123", "tag");
+    private static Tag tag2 = new Tag("124", "tag");
+    private static Tag tag3 = new Tag("125", "tag");
+    private static Tag tag4 = new Tag("126", "tag");
+    private static Tag tag5 = new Tag("127", "tag");
 
     @BeforeAll
     public static void setUpBeforeAll() {
@@ -220,6 +220,7 @@ public class MySQLServiceTest {
     }
 
     @Test
+    @Transactional
     public void testGetUserById() {
         // Not invalid
         User user = userService.getUserById("12312");
@@ -231,6 +232,8 @@ public class MySQLServiceTest {
         assertEquals(LocalDateTime.of(2023, 11, 13, 12, 30, 0), user.getLasttime());
         assertEquals("ads", user.getVerifylink());
         assertEquals(true, user.getIsverify());
+        assertEquals(1, user.getProducts().size());
+        assertEquals("1212", user.getProducts().get(0).getIdproduct());
 
         // Invalid
         userRepository.deleteAll();
@@ -246,6 +249,7 @@ public class MySQLServiceTest {
     }
 
     @Test
+    @Transactional
     public void testGetProductById() {
         // Not invalid
         Product product = productService.getProductById("1212");
@@ -256,6 +260,14 @@ public class MySQLServiceTest {
         assertEquals(0.5, product.getPrice());
         assertEquals(LocalDateTime.of(2023, 11, 13, 12, 30, 0), product.getDate());
         assertEquals("Aquí", product.getPlace());
+        assertEquals(1, product.getUsers().size());
+        assertEquals("12312", product.getUsers().get(0).getIduser());
+        assertEquals(2, product.getImages().size());
+        assertEquals("123", product.getImages().get(0).getIdimage());
+        assertEquals("124", product.getImages().get(1).getIdimage());
+        assertEquals(2, product.getTags().size());
+        assertEquals("123", product.getTags().get(0).getIdtag());
+        assertEquals("124", product.getTags().get(1).getIdtag());
 
         // Invalid
         productRepository.deleteAll();
@@ -271,12 +283,17 @@ public class MySQLServiceTest {
     }
 
     @Test
+    @Transactional
     public void testGetImageById() {
         // Not invalid
         Image image = imageService.getImageById("123");
 
         assertEquals("123", image.getIdimage());
         assertEquals("https://image.png", image.getLink());
+        assertEquals(3, image.getProducts().size());
+        assertEquals("1212", image.getProducts().get(0).getIdproduct());
+        assertEquals("1215", image.getProducts().get(1).getIdproduct());
+        assertEquals("1216", image.getProducts().get(2).getIdproduct());
 
         // Invalid
         imageRepository.deleteAll();
@@ -292,12 +309,17 @@ public class MySQLServiceTest {
     }
 
     @Test
+    @Transactional
     public void testGetTagById() {
         // Not invalid
         Tag tag = tagService.getTagById("123");
 
         assertEquals("123", tag.getIdtag());
         assertEquals("tag", tag.getName());
+        assertEquals(3, tag.getProducts().size());
+        assertEquals("1212", tag.getProducts().get(0).getIdproduct());
+        assertEquals("1216", tag.getProducts().get(1).getIdproduct());
+        assertEquals("2121", tag.getProducts().get(2).getIdproduct());
 
         // Invalid
         tagRepository.deleteAll();
@@ -314,7 +336,7 @@ public class MySQLServiceTest {
 
     @Test
     public void testCreateUser() {
-        // Not invalid not tested
+        // Invalid
         User invalidUser = null;
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -327,7 +349,7 @@ public class MySQLServiceTest {
 
     @Test
     public void testCreateProduct() {
-        // Not invalid not tested
+        // Invalid
         Product invalidProduct = null;
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -340,7 +362,7 @@ public class MySQLServiceTest {
 
     @Test
     public void testCreateImage() {
-        // Not invalid not tested
+        // Invalid
         Image invalidImage = null;
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -353,7 +375,7 @@ public class MySQLServiceTest {
 
     @Test
     public void testCreateTag() {
-        // Not invalid not tested
+        // Invalid
         Tag invalidTag = null;
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -366,7 +388,7 @@ public class MySQLServiceTest {
 
     @Test
     public void testCreateOrUpdateUser() {
-        // Not invalid not tested
+        // Invalid
         User invalidUser = null;
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -379,7 +401,7 @@ public class MySQLServiceTest {
 
     @Test
     public void testCreateOrUpdateProduct() {
-        // Not invalid not tested
+        // Invalid
         Product invalidProduct = null;
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -392,7 +414,7 @@ public class MySQLServiceTest {
 
     @Test
     public void testCreateOrUpdateImage() {
-        // Not invalid not tested
+        // Invalid
         Image invalidImage = null;
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -405,7 +427,7 @@ public class MySQLServiceTest {
 
     @Test
     public void testCreateOrUpdateTag() {
-        // Not invalid not tested
+        // Invalid
         Tag invalidTag = null;
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -418,7 +440,7 @@ public class MySQLServiceTest {
 
     @Test
     public void testUpdateUser() {
-        // Not invalid not tested
+        // Invalid
         User invalidUser = null;
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -431,7 +453,7 @@ public class MySQLServiceTest {
 
     @Test
     public void testUpdateProduct() {
-        // Not invalid not tested
+        // Invalid
         Product invalidProduct = null;
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -444,7 +466,7 @@ public class MySQLServiceTest {
 
     @Test
     public void testUpdateImage() {
-        // Not invalid not tested
+        // Invalid
         Image invalidImage = null;
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -457,7 +479,7 @@ public class MySQLServiceTest {
 
     @Test
     public void testUpdateTag() {
-        // Not invalid not tested
+        // Invalid
         Tag invalidTag = null;
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {

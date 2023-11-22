@@ -3,8 +3,7 @@ package com.c2c.service.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +13,7 @@ import com.c2c.model.User;
 import com.c2c.repository.ProductRepository;
 import com.c2c.repository.UserRepository;
 import com.c2c.service.UserService;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImplementation implements UserService {
@@ -34,6 +34,7 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
+    @Transactional
     public User getUserById(String iduser) {
         return userRepository.findById(iduser)
                 .orElseThrow(() -> new EntityNotFoundException("User with ID: " + iduser + " not found"));
@@ -110,9 +111,6 @@ public class UserServiceImplementation implements UserService {
         }
         if (user.getVerifylink() == null || user.getVerifylink().trim().isEmpty()) {
             throw new IllegalArgumentException("User verifylink cannot be null or empty");
-        }
-        if (user.getProducts() == null || user.getProducts().isEmpty()) {
-            throw new IllegalArgumentException("User products cannot be null or empty");
         }
     }
 }

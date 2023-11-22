@@ -2,7 +2,7 @@ package com.c2c.service.implementation;
 
 import java.util.List;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +28,7 @@ public class ImageServiceImplementation implements ImageService {
     }
 
     @Override
+    @Transactional
     public Image getImageById(String idimage) {
         return imageRepository.findById(idimage)
                 .orElseThrow(() -> new EntityNotFoundException("Image with ID: " + idimage + " not found"));
@@ -79,9 +80,6 @@ public class ImageServiceImplementation implements ImageService {
         }
         if (image.getIdimage() == null || image.getIdimage().trim().isEmpty()) {
             throw new IllegalArgumentException("Image id cannot be null or empty");
-        }
-        if (image.getLink() == null || image.getLink().trim().isEmpty()) {
-            throw new IllegalArgumentException("Image link cannot be null or empty");
         }
     }
 }

@@ -6,14 +6,20 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class CustomLocalDateTimeSerializer extends JsonSerializer<LocalDateTime> {
 
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     @Override
     public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        gen.writeString(formatter.format(value));
+        // Convert LocalDateTime to UTC (or another timezone, as appropriate for your
+        // application)
+        ZonedDateTime utcValue = value.atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC);
+        gen.writeString(formatter.format(utcValue));
     }
 }

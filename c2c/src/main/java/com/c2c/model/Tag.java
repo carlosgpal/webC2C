@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 
 @Entity
 public class Tag {
@@ -64,7 +64,6 @@ public class Tag {
         return "{" +
                 " idtag='" + getIdtag() + "'" +
                 ", name='" + getName() + "'" +
-                ", products='" + getProducts() + "'" +
                 "}";
     }
 
@@ -76,13 +75,12 @@ public class Tag {
             return false;
         }
         Tag tag = (Tag) o;
-        return Objects.equals(idtag, tag.idtag) && Objects.equals(name, tag.name)
-                && Objects.equals(products, tag.products);
+        return Objects.equals(idtag, tag.idtag) && Objects.equals(name, tag.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idtag, name, products);
+        return Objects.hash(idtag, name);
     }
 
 }

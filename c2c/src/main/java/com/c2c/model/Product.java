@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 
 @Entity
 public class Product {
@@ -174,9 +174,6 @@ public class Product {
                 ", price='" + getPrice() + "'" +
                 ", date='" + getDate() + "'" +
                 ", place='" + getPlace() + "'" +
-                ", images='" + getImages() + "'" +
-                ", tags='" + getTags() + "'" +
-                ", users='" + getUsers() + "'" +
                 "}";
     }
 
@@ -190,14 +187,12 @@ public class Product {
         Product product = (Product) o;
         return Objects.equals(idproduct, product.idproduct) && Objects.equals(name, product.name)
                 && Objects.equals(description, product.description) && price == product.price
-                && Objects.equals(date, product.date) && Objects.equals(place, product.place)
-                && Objects.equals(images, product.images) && Objects.equals(tags, product.tags)
-                && Objects.equals(users, product.users);
+                && Objects.equals(date, product.date) && Objects.equals(place, product.place);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idproduct, name, description, price, date, place, images, tags, users);
+        return Objects.hash(idproduct, name, description, price, date, place);
     }
 
 }

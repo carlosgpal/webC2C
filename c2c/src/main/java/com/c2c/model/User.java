@@ -1,12 +1,12 @@
 package com.c2c.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -157,7 +157,6 @@ public class User {
                 ", lasttime='" + getLasttime() + "'" +
                 ", isverify='" + isIsverify() + "'" +
                 ", verifylink='" + getVerifylink() + "'" +
-                ", products='" + getProducts() + "'" +
                 "}";
     }
 
@@ -172,12 +171,12 @@ public class User {
         return Objects.equals(iduser, user.iduser) && Objects.equals(name, user.name)
                 && Objects.equals(email, user.email) && Objects.equals(pass, user.pass)
                 && Objects.equals(lasttime, user.lasttime) && isverify == user.isverify
-                && Objects.equals(verifylink, user.verifylink) && Objects.equals(products, user.products);
+                && Objects.equals(verifylink, user.verifylink);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(iduser, name, email, pass, lasttime, isverify, verifylink, products);
+        return Objects.hash(iduser, name, email, pass, lasttime, isverify, verifylink);
     }
 
 }

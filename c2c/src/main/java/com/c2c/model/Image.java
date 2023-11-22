@@ -3,11 +3,11 @@ package com.c2c.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 
 import java.util.Objects;
 
@@ -65,7 +65,6 @@ public class Image {
         return "{" +
                 " idproduct='" + getIdimage() + "'" +
                 ", link='" + getLink() + "'" +
-                ", products='" + getProducts() + "'" +
                 "}";
     }
 
@@ -77,13 +76,12 @@ public class Image {
             return false;
         }
         Image image = (Image) o;
-        return Objects.equals(idimage, image.idimage) && Objects.equals(link, image.link)
-                && Objects.equals(products, image.products);
+        return Objects.equals(idimage, image.idimage) && Objects.equals(link, image.link);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idimage, link, products);
+        return Objects.hash(idimage, link);
     }
 
 }

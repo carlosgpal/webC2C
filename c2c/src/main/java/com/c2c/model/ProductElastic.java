@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-@Document(indexName = "products")
+@Document(indexName = "product")
 public class ProductElastic {
     @Id
     private String idproduct;
@@ -28,7 +28,7 @@ public class ProductElastic {
     @Field(type = FieldType.Double, name = "price")
     private double price;
 
-    @Field(type = FieldType.Date, name = "date", pattern = "yyyy-MM-dd HH:mm:ss")
+    @Field(type = FieldType.Date, name = "date", pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     @JsonSerialize(using = CustomLocalDateTimeSerializer.class)
     @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
     private LocalDateTime date;
@@ -45,7 +45,8 @@ public class ProductElastic {
     public ProductElastic() {
     }
 
-    public ProductElastic(String idproduct, String name, String description, double price, LocalDateTime date, String place, List<TagElastic> tags, String user) {
+    public ProductElastic(String idproduct, String name, String description, double price, LocalDateTime date,
+            String place, List<TagElastic> tags, String user) {
         this.idproduct = idproduct;
         this.name = name;
         this.description = description;
@@ -123,15 +124,15 @@ public class ProductElastic {
     @Override
     public String toString() {
         return "{" +
-            " idproduct='" + getIdproduct() + "'" +
-            ", name='" + getName() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", price='" + getPrice() + "'" +
-            ", date='" + getDate() + "'" +
-            ", place='" + getPlace() + "'" +
-            ", tags='" + getTags() + "'" +
-            ", user='" + getUser() + "'" +
-            "}";
+                " idproduct='" + getIdproduct() + "'" +
+                ", name='" + getName() + "'" +
+                ", description='" + getDescription() + "'" +
+                ", price='" + getPrice() + "'" +
+                ", date='" + getDate() + "'" +
+                ", place='" + getPlace() + "'" +
+                ", tags='" + getTags() + "'" +
+                ", user='" + getUser() + "'" +
+                "}";
     }
 
     @Override
@@ -142,7 +143,10 @@ public class ProductElastic {
             return false;
         }
         ProductElastic productElastic = (ProductElastic) o;
-        return Objects.equals(idproduct, productElastic.idproduct) && Objects.equals(name, productElastic.name) && Objects.equals(description, productElastic.description) && price == productElastic.price && Objects.equals(date, productElastic.date) && Objects.equals(place, productElastic.place) && Objects.equals(tags, productElastic.tags) && Objects.equals(user, productElastic.user);
+        return Objects.equals(idproduct, productElastic.idproduct) && Objects.equals(name, productElastic.name)
+                && Objects.equals(description, productElastic.description) && price == productElastic.price
+                && Objects.equals(date, productElastic.date) && Objects.equals(place, productElastic.place)
+                && Objects.equals(tags, productElastic.tags) && Objects.equals(user, productElastic.user);
     }
 
     @Override

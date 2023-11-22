@@ -2,7 +2,7 @@ package com.c2c.service.implementation;
 
 import java.util.List;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +28,7 @@ public class TagServiceImplementation implements TagService {
     }
 
     @Override
+    @Transactional
     public Tag getTagById(String idtag) {
         return tagRepository.findById(idtag)
                 .orElseThrow(() -> new EntityNotFoundException("Tag with ID: " + idtag + " not found"));
@@ -79,9 +80,6 @@ public class TagServiceImplementation implements TagService {
         }
         if (tag.getIdtag() == null || tag.getIdtag().trim().isEmpty()) {
             throw new IllegalArgumentException("Tag id cannot be null or empty");
-        }
-        if (tag.getName() == null || tag.getName().trim().isEmpty()) {
-            throw new IllegalArgumentException("Tag name cannot be null or empty");
         }
     }
 }

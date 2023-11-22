@@ -15,4 +15,10 @@ public interface ProductElasticService {
     public ProductElastic createOrUpdateProductElastic(String idproduct, ProductElastic newProduct) throws IOException;
 
     public ProductElastic updateProductElastic(String idproduct, ProductElastic newProduct) throws IOException;
+
+    public ProductElastic deleteProductElastic(String idproduct) throws IOException;
+
+    public List<ProductElastic> getProductsElasticByUser(String iduser) throws IOException;
+
+    public List<ProductElastic> getProductsElasticByTags(List<String> idtags) throws IOException;
 }

@@ -2,7 +2,7 @@ package com.c2c.service.implementation;
 
 import java.util.List;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,9 +28,11 @@ public class ProductServiceImplementation implements ProductService {
     }
 
     @Override
+    @Transactional
     public Product getProductById(String idproduct) {
-        return productRepository.findById(idproduct)
+        Product product = productRepository.findById(idproduct)
                 .orElseThrow(() -> new EntityNotFoundException("Product with ID: " + idproduct + " not found"));
+        return product;
     }
 
     @Override
@@ -94,15 +96,6 @@ public class ProductServiceImplementation implements ProductService {
         }
         if (product.getPlace() == null || product.getPlace().trim().isEmpty()) {
             throw new IllegalArgumentException("Product place cannot be empty");
-        }
-        if (product.getImages() == null || product.getImages().isEmpty()) {
-            throw new IllegalArgumentException("Product images cannot be empty");
-        }
-        if (product.getTags() == null || product.getTags().isEmpty()) {
-            throw new IllegalArgumentException("Product tags cannot be empty");
-        }
-        if (product.getUsers() == null || product.getUsers().isEmpty()) {
-            throw new IllegalArgumentException("Product users cannot be empty");
         }
     }
 }
