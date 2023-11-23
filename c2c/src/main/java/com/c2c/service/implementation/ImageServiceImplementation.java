@@ -1,16 +1,21 @@
 package com.c2c.service.implementation;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.c2c.dto.ImageDTO;
 import com.c2c.model.Image;
 import com.c2c.repository.ImageRepository;
 import com.c2c.service.ImageService;
+import com.c2c.service.exception.ImageNotFoundException;
+import com.c2c.service.exception.TechnicalException;
 
 @Service
 public class ImageServiceImplementation implements ImageService {
@@ -18,68 +23,47 @@ public class ImageServiceImplementation implements ImageService {
     @Autowired
     private ImageRepository imageRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Override
-    public List<Image> getAllImages() {
-        List<Image> images = imageRepository.findAll();
-        if (images.isEmpty()) {
-            throw new EntityNotFoundException("No images found");
+    public List<ImageDTO> getAllImages() {
+        List<Image> listImagesEntity = imageRepository.findAll();
+        List<ImageDTO> listImageDTO = listImagesEntity.stream()
+                .map(image -> modelMapper.map(image, ImageDTO.class))
+                .collect(Collectors.toList());
+        return listImageDTO;
+    }
+
+    @Override
+    public ImageDTO getImageById(String idimage) {
+        ImageDTO imageDTO = null;
+        try {
+            Image imageEntity = imageRepository.findByIdimage(idimage);
+            imageDTO = modelMapper.map(imageEntity, ImageDTO.class);
+        } catch (EntityNotFoundException e) {
+            throw new ImageNotFoundException(idimage, e);
+        } catch (Exception e) {
+            throw new TechnicalException(e);
         }
-        return images;
+        return imageDTO;
     }
 
     @Override
-    @Transactional
-    public Image getImageById(String idimage) {
-        return imageRepository.findById(idimage)
-                .orElseThrow(() -> new EntityNotFoundException("Image with ID: " + idimage + " not found"));
+    public ImageDTO createImage(ImageDTO image) {
+        Image imageEntity = modelMapper.map(image, Image.class);
+        imageEntity = imageRepository.save(imageEntity);
+        return modelMapper.map(imageEntity, ImageDTO.class);
     }
 
     @Override
-    public Image createImage(Image newImage) {
-        validateImage(newImage);
-
-        return imageRepository.save(newImage);
-    }
-
-    @Override
-    public Image createOrUpdateImage(String idimage, Image newImage) {
-        if (imageRepository.existsById(idimage)) {
-            return updateImage(idimage, newImage);
-        } else {
-            return createImage(newImage);
-        }
-    }
-
-    @Override
-    public Image updateImage(String idimage, Image newImage) {
-        validateImage(newImage);
-
-        imageRepository.findById(idimage)
-                .orElseThrow(() -> new EntityNotFoundException("Image with ID: " + idimage + " not found"));
-
-        newImage.setIdimage(idimage);
-        return imageRepository.save(newImage);
-    }
-
-    @Override
-    @Transactional
-    public Image deleteImage(String idimage) {
-        Image image = imageRepository.findById(idimage)
-                .orElseThrow(() -> new EntityNotFoundException("Image with ID: " + idimage + " not found"));
-
-        image.getProducts().clear();
-        imageRepository.save(image);
-        imageRepository.delete(image);
-
-        return image;
-    }
-
-    private void validateImage(Image image) {
-        if (image == null) {
-            throw new IllegalArgumentException("Image cannot be null");
-        }
-        if (image.getIdimage() == null || image.getIdimage().trim().isEmpty()) {
-            throw new IllegalArgumentException("Image id cannot be null or empty");
+    public void deleteImage(String idimage) {
+        try {
+            imageRepository.deleteById(idimage);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ImageNotFoundException(idimage, e);
+        } catch (Exception e) {
+            throw new TechnicalException(e);
         }
     }
 }

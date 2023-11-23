@@ -1,16 +1,21 @@
 package com.c2c.service.implementation;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import org.modelmapper.ModelMapper;
 
 import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.c2c.dto.TagDTO;
 import com.c2c.model.Tag;
 import com.c2c.repository.TagRepository;
 import com.c2c.service.TagService;
+import com.c2c.service.exception.TagNotFoundException;
+import com.c2c.service.exception.TechnicalException;
 
 @Service
 public class TagServiceImplementation implements TagService {
@@ -18,68 +23,47 @@ public class TagServiceImplementation implements TagService {
     @Autowired
     private TagRepository tagRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Override
-    public List<Tag> getAllTags() {
-        List<Tag> tags = tagRepository.findAll();
-        if (tags.isEmpty()) {
-            throw new EntityNotFoundException("No tags found");
+    public List<TagDTO> getAllTags() {
+        List<Tag> listTagsEntity = tagRepository.findAll();
+        List<TagDTO> listTagDTO = listTagsEntity.stream()
+                .map(tag -> modelMapper.map(tag, TagDTO.class))
+                .collect(Collectors.toList());
+        return listTagDTO;
+    }
+
+    @Override
+    public TagDTO getTagById(String idtag) {
+        TagDTO tagDTO = null;
+        try {
+            Tag tagEntity = tagRepository.findByIdtag(idtag);
+            tagDTO = modelMapper.map(tagEntity, TagDTO.class);
+        } catch (EntityNotFoundException e) {
+            throw new TagNotFoundException(idtag, e);
+        } catch (Exception e) {
+            throw new TechnicalException(e);
         }
-        return tags;
+        return tagDTO;
     }
 
     @Override
-    @Transactional
-    public Tag getTagById(String idtag) {
-        return tagRepository.findById(idtag)
-                .orElseThrow(() -> new EntityNotFoundException("Tag with ID: " + idtag + " not found"));
+    public TagDTO createTag(TagDTO tag) {
+        Tag tagEntity = modelMapper.map(tag, Tag.class);
+        tagEntity = tagRepository.save(tagEntity);
+        return modelMapper.map(tagEntity, TagDTO.class);
     }
 
     @Override
-    public Tag createTag(Tag newTag) {
-        validateTag(newTag);
-
-        return tagRepository.save(newTag);
-    }
-
-    @Override
-    public Tag createOrUpdateTag(String idtag, Tag newTag) {
-        if (tagRepository.existsById(idtag)) {
-            return updateTag(idtag, newTag);
-        } else {
-            return createTag(newTag);
-        }
-    }
-
-    @Override
-    public Tag updateTag(String idtag, Tag newTag) {
-        validateTag(newTag);
-
-        tagRepository.findById(idtag)
-                .orElseThrow(() -> new EntityNotFoundException("Tag with ID: " + idtag + " not found"));
-
-        newTag.setIdtag(idtag);
-        return tagRepository.save(newTag);
-    }
-
-    @Override
-    @Transactional
-    public Tag deleteTag(String idtag) {
-        Tag tag = tagRepository.findById(idtag)
-                .orElseThrow(() -> new EntityNotFoundException("Tag with ID: " + idtag + " not found"));
-
-        tag.getProducts().clear();
-        tagRepository.save(tag);
-        tagRepository.delete(tag);
-
-        return tag;
-    }
-
-    private void validateTag(Tag tag) {
-        if (tag == null) {
-            throw new IllegalArgumentException("Tag cannot be null");
-        }
-        if (tag.getIdtag() == null || tag.getIdtag().trim().isEmpty()) {
-            throw new IllegalArgumentException("Tag id cannot be null or empty");
+    public void deleteTag(String idtag) {
+        try {
+            tagRepository.deleteById(idtag);
+        } catch (EmptyResultDataAccessException e) {
+            throw new TagNotFoundException(idtag, e);
+        } catch (Exception e) {
+            throw new TechnicalException(e);
         }
     }
 }

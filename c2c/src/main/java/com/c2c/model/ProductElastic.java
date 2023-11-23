@@ -5,12 +5,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import com.c2c.other.CustomLocalDateTimeDeserializer;
-import com.c2c.other.CustomLocalDateTimeSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,10 +23,8 @@ public class ProductElastic {
     @Field(type = FieldType.Double, name = "price")
     private double price;
 
-    @Field(type = FieldType.Date, name = "date", pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
-    @JsonSerialize(using = CustomLocalDateTimeSerializer.class)
-    @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
-    private LocalDateTime date;
+    @Field(type = FieldType.Date, name = "date")
+    private Date date;
 
     @Field(type = FieldType.Text, name = "place")
     private String place;
@@ -45,7 +38,7 @@ public class ProductElastic {
     public ProductElastic() {
     }
 
-    public ProductElastic(String idproduct, String name, String description, double price, LocalDateTime date,
+    public ProductElastic(String idproduct, String name, String description, double price, Date date,
             String place, List<TagElastic> tags, String user) {
         this.idproduct = idproduct;
         this.name = name;
@@ -89,11 +82,11 @@ public class ProductElastic {
         this.price = price;
     }
 
-    public LocalDateTime getDate() {
+    public Date getDate() {
         return this.date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

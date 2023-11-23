@@ -11,24 +11,22 @@ public class ProductDTO {
     private double price;
     private LocalDateTime date;
     private String place;
-    private List<String> userIds;
-    private List<String> imageIds;
-    private List<String> tagIds;
+    private List<ImageDTO> images;
+    private List<TagDTO> tags;
 
     public ProductDTO() {
     }
 
     public ProductDTO(String idproduct, String name, String description, double price, LocalDateTime date, String place,
-            List<String> userIds, List<String> imageIds, List<String> tagIds) {
+            List<ImageDTO> images, List<TagDTO> tags) {
         this.idproduct = idproduct;
         this.name = name;
         this.description = description;
         this.price = price;
         this.date = date;
         this.place = place;
-        this.userIds = userIds;
-        this.imageIds = imageIds;
-        this.tagIds = tagIds;
+        this.images = images;
+        this.tags = tags;
     }
 
     public String getIdproduct() {
@@ -79,29 +77,19 @@ public class ProductDTO {
         this.place = place;
     }
 
-    public List<String> getUserIds() {
-        return userIds;
+    public List<ImageDTO> getImages() {
+        return images;
     }
 
-    public void setUserIds(List<String> userIds) {
-        this.userIds = userIds;
+    public void setImages(List<ImageDTO> images) {
+        this.images = images;
     }
 
-    public List<String> getImageIds() {
-        return imageIds;
+    public List<TagDTO> getTags() {
+        return tags;
     }
 
-    public void setImageIds(List<String> imageIds) {
-        this.imageIds = imageIds;
+    public void setTags(List<TagDTO> tags) {
+        this.tags = tags;
     }
-
-    public List<String> getTagIds() {
-        return tagIds;
-    }
-
-    public void setTagIds(List<String> tagIds) {
-        this.tagIds = tagIds;
-    }
-
-    // Puedes agregar métodos utilitarios si son necesarios
 }

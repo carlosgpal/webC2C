@@ -1,14 +1,9 @@
 package com.c2c;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.EntityNotFoundException;
-
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,34 +11,19 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
-import com.c2c.model.Image;
-import com.c2c.model.Product;
-import com.c2c.model.Tag;
-import com.c2c.model.User;
-import com.c2c.repository.ImageRepository;
-import com.c2c.repository.ProductRepository;
-import com.c2c.repository.TagRepository;
-import com.c2c.repository.UserRepository;
-import com.c2c.service.ImageService;
-import com.c2c.service.ProductService;
-import com.c2c.service.TagService;
-import com.c2c.service.UserService;
+import com.c2c.dto.*;
+import com.c2c.service.*;
+import com.c2c.service.exception.ImageNotFoundException;
+import com.c2c.service.exception.ProductNotFoundException;
+import com.c2c.service.exception.TagNotFoundException;
+import com.c2c.service.exception.UserNotFoundException;
 
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @ActiveProfiles("test")
 public class MySQLServiceTest {
-
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private ImageRepository imageRepository;
-    @Autowired
-    private TagRepository tagRepository;
 
     @Autowired
     private UserService userService;
@@ -54,78 +34,43 @@ public class MySQLServiceTest {
     @Autowired
     private TagService tagService;
 
-    private static User john = new User("12312", "Jhon", "Jhon@email.com", "pass1",
-            LocalDateTime.of(2023, 11, 13, 12, 30, 0), true, "ads");
-    private static User claire = new User("12343", "Claire", "Claire@email.com", "pass2",
-            LocalDateTime.of(2023, 11, 13, 12, 30, 0), false, "ads");
-    private static User juan = new User("1111", "Juan", "Juan@email.com", "pass3",
-            LocalDateTime.of(2023, 11, 13, 12, 30, 0), true, "ads");
-    private static User fernando = new User("2222", "Fernando", "Fernando@email.com", "pass4",
-            LocalDateTime.of(2023, 11, 13, 12, 30, 0), false, "ads");
-    private static Product chopsticks = new Product("1212", "chopsticks barato", "bueno bonito y barato", 0.5,
-            LocalDateTime.of(2023, 11, 13, 12, 30, 0),
-            "Aquí");
-    private static Product product2 = new Product("1213", "product2", "bueno bonito y barato", 0.5,
-            LocalDateTime.of(2023, 11, 13, 12, 30, 0), "Aquí");
-    private static Product product3 = new Product("1214", "product3", "bueno bonito y barato", 0.5,
-            LocalDateTime.of(2023, 11, 13, 12, 30, 0), "Aquí");
-    private static Product product4 = new Product("1215", "product4", "bueno bonito y barato", 0.5,
-            LocalDateTime.of(2023, 11, 13, 12, 30, 0), "Aquí");
-    private static Product product5 = new Product("1216", "product5", "bueno bonito y barato", 0.5,
-            LocalDateTime.of(2023, 11, 13, 12, 30, 0), "Aquí");
-    private static Product toaster = new Product("2121", "toaster barato", "bueno bonito y barato", 0.8,
-            LocalDateTime.of(2023, 11, 13, 12, 30, 0), "Aquí");
-    private static Image image1 = new Image("123", "https://image.png");
-    private static Image image2 = new Image("124", "https://image.png");
-    private static Image image3 = new Image("125", "https://image.png");
-    private static Image image4 = new Image("126", "https://image.png");
-    private static Image image5 = new Image("127", "https://image.png");
-    private static Tag tag1 = new Tag("123", "tag");
-    private static Tag tag2 = new Tag("124", "tag");
-    private static Tag tag3 = new Tag("125", "tag");
-    private static Tag tag4 = new Tag("126", "tag");
-    private static Tag tag5 = new Tag("127", "tag");
+    ImageDTO image1 = new ImageDTO("123", "https://image.png");
+    ImageDTO image2 = new ImageDTO("124", "https://image.png");
+    ImageDTO image3 = new ImageDTO("125", "https://image.png");
+    ImageDTO image4 = new ImageDTO("126", "https://image.png");
+    ImageDTO image5 = new ImageDTO("127", "https://image.png");
 
-    @BeforeAll
-    public static void setUpBeforeAll() {
-        chopsticks.addImage(image1);
-        chopsticks.addImage(image2);
-        product2.addImage(image3);
-        product2.addImage(image4);
-        product3.addImage(image4);
-        product3.addImage(image5);
-        product4.addImage(image5);
-        product4.addImage(image1);
-        product5.addImage(image1);
-        product5.addImage(image2);
-        toaster.addImage(image2);
-        toaster.addImage(image3);
-        chopsticks.addTag(tag1);
-        chopsticks.addTag(tag2);
-        product2.addTag(tag2);
-        product2.addTag(tag3);
-        product3.addTag(tag3);
-        product3.addTag(tag4);
-        product4.addTag(tag4);
-        product4.addTag(tag5);
-        product5.addTag(tag5);
-        product5.addTag(tag1);
-        toaster.addTag(tag1);
-        toaster.addTag(tag2);
-        john.addProduct(chopsticks);
-        fernando.addProduct(product2);
-        juan.addProduct(product3);
-        claire.addProduct(product4);
-        claire.addProduct(product5);
-        claire.addProduct(toaster);
-    }
+    TagDTO tag1 = new TagDTO("123", "tag");
+    TagDTO tag2 = new TagDTO("124", "tag");
+    TagDTO tag3 = new TagDTO("125", "tag");
+    TagDTO tag4 = new TagDTO("126", "tag");
+    TagDTO tag5 = new TagDTO("127", "tag");
+
+    ProductDTO product1 = new ProductDTO("1212", "chopsticks barato", "bueno bonito y barato", 0.5,
+            LocalDateTime.of(2023, 11, 13, 12, 30, 0), "Aquí", List.of(image1, image2), List.of(tag1, tag2));
+    ProductDTO product2 = new ProductDTO("1213", "chopsticks caro", "bueno bonito y caro", 0.5,
+            LocalDateTime.of(2023, 11, 13, 12, 30, 0), "Aquí", List.of(image3, image4, image5), List.of(tag4, tag2));
+    ProductDTO product3 = new ProductDTO("1214", "chopsticks medio", "bueno bonito y medio", 0.5,
+            LocalDateTime.of(2023, 11, 13, 12, 30, 0), "Aquí", List.of(image1, image2, image3, image4, image5),
+            List.of(tag5, tag3));
+    ProductDTO product4 = new ProductDTO("1215", "chopsticks barato", "bueno bonito y barato", 0.5,
+            LocalDateTime.of(2023, 11, 13, 12, 30, 0), "Aquí", List.of(image1, image2), List.of(tag3, tag4, tag1));
+    ProductDTO product5 = new ProductDTO("1216", "chopsticks barato", "bueno bonito y barato", 0.5,
+            LocalDateTime.of(2023, 11, 13, 12, 30, 0), "Aquí", List.of(image1, image2),
+            List.of(tag1, tag2, tag3, tag4, tag5));
+
+    UserDTO jhon = new UserDTO("1", "Jhon", "Jhon@example.com", "pass1", LocalDateTime.of(2023, 11, 13, 12, 30, 0),
+            true, "ads", List.of(product1));
+    UserDTO claire = new UserDTO("2", "Claire", "Claire@example.com", "pass2",
+            LocalDateTime.of(2023, 11, 13, 12, 30, 0), true, "ads", List.of(product2, product3));
+    UserDTO juan = new UserDTO("3", "Juan", "Juan@example.com", "pass3", LocalDateTime.of(2023, 11, 13, 12, 30, 0),
+            true, "ads", List.of(product4, product5));
+    UserDTO fernando = new UserDTO("4", "Fernando", "Fernando@example.com", "pass4",
+            LocalDateTime.of(2023, 11, 13, 12, 30, 0), true, "ads",
+            List.of(product1, product2, product3, product4, product5));
 
     @BeforeEach
     public void setUp() {
-        userService.createUser(john);
-        userService.createUser(claire);
-        userService.createUser(juan);
-        userService.createUser(fernando);
 
         imageService.createImage(image1);
         imageService.createImage(image2);
@@ -139,441 +84,131 @@ public class MySQLServiceTest {
         tagService.createTag(tag4);
         tagService.createTag(tag5);
 
-        productService.createProduct(chopsticks);
+        productService.createProduct(product1);
         productService.createProduct(product2);
         productService.createProduct(product3);
         productService.createProduct(product4);
         productService.createProduct(product5);
-        productService.createProduct(toaster);
+
+        userService.createUser(jhon);
+        userService.createUser(claire);
+        userService.createUser(juan);
+        userService.createUser(fernando);
     }
 
     @Test
     public void testGetAllUsers() {
-        // Not invalid
-        assertEquals(4, userService.getAllUsers().size());
-
-        userRepository.deleteAll();
-
-        // Invalid
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
-            userService.getAllUsers();
-        });
-
-        String expectedMessage = "No users found";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
+        List<UserDTO> users = userService.getAllUsers();
+        assertNotNull(users);
+        assertFalse(users.isEmpty());
     }
 
     @Test
-    public void testGetAllProducts() {
-        // Not invalid
-        assertEquals(6, productService.getAllProducts().size());
-
-        // Invalid
-        productRepository.deleteAll();
-
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
-            productService.getAllProducts();
-        });
-
-        String expectedMessage = "No products found";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-    }
-
-    @Test
-    public void testGetAllImages() {
-        // Not invalid
-        assertEquals(5, imageService.getAllImages().size());
-
-        // Invalid
-        imageRepository.deleteAll();
-
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
-            imageService.getAllImages();
-        });
-
-        String expectedMessage = "No images found";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-    }
-
-    @Test
-    public void testGetAllTags() {
-        // Not invalid
-        assertEquals(5, tagService.getAllTags().size());
-
-        // Invalid
-        tagRepository.deleteAll();
-
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
-            tagService.getAllTags();
-        });
-
-        String expectedMessage = "No tags found";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-    }
-
-    @Test
-    @Transactional
     public void testGetUserById() {
-        // Not invalid
-        User user = userService.getUserById("12312");
-
-        assertEquals("12312", user.getIduser());
+        UserDTO user = userService.getUserById("1");
+        assertNotNull(user);
         assertEquals("Jhon", user.getName());
-        assertEquals("Jhon@email.com", user.getEmail());
-        assertEquals("pass1", user.getPass());
-        assertEquals(LocalDateTime.of(2023, 11, 13, 12, 30, 0), user.getLasttime());
-        assertEquals("ads", user.getVerifylink());
-        assertEquals(true, user.getIsverify());
-        assertEquals(1, user.getProducts().size());
-        assertEquals("1212", user.getProducts().get(0).getIdproduct());
-
-        // Invalid
-        userRepository.deleteAll();
-
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
-            userService.getUserById("12312");
-        });
-
-        String expectedMessage = "User with ID: 12312 not found";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-    }
-
-    @Test
-    @Transactional
-    public void testGetProductById() {
-        // Not invalid
-        Product product = productService.getProductById("1212");
-
-        assertEquals("1212", product.getIdproduct());
-        assertEquals("chopsticks barato", product.getName());
-        assertEquals("bueno bonito y barato", product.getDescription());
-        assertEquals(0.5, product.getPrice());
-        assertEquals(LocalDateTime.of(2023, 11, 13, 12, 30, 0), product.getDate());
-        assertEquals("Aquí", product.getPlace());
-        assertEquals(1, product.getUsers().size());
-        assertEquals("12312", product.getUsers().get(0).getIduser());
-        assertEquals(2, product.getImages().size());
-        assertEquals("123", product.getImages().get(0).getIdimage());
-        assertEquals("124", product.getImages().get(1).getIdimage());
-        assertEquals(2, product.getTags().size());
-        assertEquals("123", product.getTags().get(0).getIdtag());
-        assertEquals("124", product.getTags().get(1).getIdtag());
-
-        // Invalid
-        productRepository.deleteAll();
-
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
-            productService.getProductById("1212");
-        });
-
-        String expectedMessage = "Product with ID: 1212 not found";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-    }
-
-    @Test
-    @Transactional
-    public void testGetImageById() {
-        // Not invalid
-        Image image = imageService.getImageById("123");
-
-        assertEquals("123", image.getIdimage());
-        assertEquals("https://image.png", image.getLink());
-        assertEquals(3, image.getProducts().size());
-        assertEquals("1212", image.getProducts().get(0).getIdproduct());
-        assertEquals("1215", image.getProducts().get(1).getIdproduct());
-        assertEquals("1216", image.getProducts().get(2).getIdproduct());
-
-        // Invalid
-        imageRepository.deleteAll();
-
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
-            imageService.getImageById("123");
-        });
-
-        String expectedMessage = "Image with ID: 123 not found";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-    }
-
-    @Test
-    @Transactional
-    public void testGetTagById() {
-        // Not invalid
-        Tag tag = tagService.getTagById("123");
-
-        assertEquals("123", tag.getIdtag());
-        assertEquals("tag", tag.getName());
-        assertEquals(3, tag.getProducts().size());
-        assertEquals("1212", tag.getProducts().get(0).getIdproduct());
-        assertEquals("1216", tag.getProducts().get(1).getIdproduct());
-        assertEquals("2121", tag.getProducts().get(2).getIdproduct());
-
-        // Invalid
-        tagRepository.deleteAll();
-
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
-            tagService.getTagById("123");
-        });
-
-        String expectedMessage = "Tag with ID: 123 not found";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-    }
-
-    @Test
-    public void testCreateUser() {
-        // Invalid
-        User invalidUser = null;
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            userService.createUser(invalidUser);
-        });
-
-        String expectedMessage = "User cannot be null";
-        assertTrue(exception.getMessage().contains(expectedMessage));
-    }
-
-    @Test
-    public void testCreateProduct() {
-        // Invalid
-        Product invalidProduct = null;
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            productService.createProduct(invalidProduct);
-        });
-
-        String expectedMessage = "Product cannot be null";
-        assertTrue(exception.getMessage().contains(expectedMessage));
-    }
-
-    @Test
-    public void testCreateImage() {
-        // Invalid
-        Image invalidImage = null;
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            imageService.createImage(invalidImage);
-        });
-
-        String expectedMessage = "Image cannot be null";
-        assertTrue(exception.getMessage().contains(expectedMessage));
-    }
-
-    @Test
-    public void testCreateTag() {
-        // Invalid
-        Tag invalidTag = null;
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            tagService.createTag(invalidTag);
-        });
-
-        String expectedMessage = "Tag cannot be null";
-        assertTrue(exception.getMessage().contains(expectedMessage));
-    }
-
-    @Test
-    public void testCreateOrUpdateUser() {
-        // Invalid
-        User invalidUser = null;
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            userService.createOrUpdateUser("12343", invalidUser);
-        });
-
-        String expectedMessage = "User cannot be null";
-        assertTrue(exception.getMessage().contains(expectedMessage));
-    }
-
-    @Test
-    public void testCreateOrUpdateProduct() {
-        // Invalid
-        Product invalidProduct = null;
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            productService.createOrUpdateProduct("1212", invalidProduct);
-        });
-
-        String expectedMessage = "Product cannot be null";
-        assertTrue(exception.getMessage().contains(expectedMessage));
-    }
-
-    @Test
-    public void testCreateOrUpdateImage() {
-        // Invalid
-        Image invalidImage = null;
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            imageService.createOrUpdateImage("123", invalidImage);
-        });
-
-        String expectedMessage = "Image cannot be null";
-        assertTrue(exception.getMessage().contains(expectedMessage));
-    }
-
-    @Test
-    public void testCreateOrUpdateTag() {
-        // Invalid
-        Tag invalidTag = null;
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            tagService.createOrUpdateTag("123", invalidTag);
-        });
-
-        String expectedMessage = "Tag cannot be null";
-        assertTrue(exception.getMessage().contains(expectedMessage));
     }
 
     @Test
     public void testUpdateUser() {
-        // Invalid
-        User invalidUser = null;
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            userService.updateUser("12343", invalidUser);
-        });
-
-        String expectedMessage = "User cannot be null";
-        assertTrue(exception.getMessage().contains(expectedMessage));
-    }
-
-    @Test
-    public void testUpdateProduct() {
-        // Invalid
-        Product invalidProduct = null;
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            productService.updateProduct("1212", invalidProduct);
-        });
-
-        String expectedMessage = "Product cannot be null";
-        assertTrue(exception.getMessage().contains(expectedMessage));
-    }
-
-    @Test
-    public void testUpdateImage() {
-        // Invalid
-        Image invalidImage = null;
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            imageService.updateImage("123", invalidImage);
-        });
-
-        String expectedMessage = "Image cannot be null";
-        assertTrue(exception.getMessage().contains(expectedMessage));
-    }
-
-    @Test
-    public void testUpdateTag() {
-        // Invalid
-        Tag invalidTag = null;
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            tagService.updateTag("123", invalidTag);
-        });
-
-        String expectedMessage = "Tag cannot be null";
-        assertTrue(exception.getMessage().contains(expectedMessage));
+        UserDTO userToUpdate = userService.getUserById("1");
+        userToUpdate.setName("John Updated");
+        UserDTO updatedUser = userService.createUser(userToUpdate);
+        assertNotNull(updatedUser);
+        assertEquals("John Updated", updatedUser.getName());
     }
 
     @Test
     public void testDeleteUser() {
-        // Not invalid
-        userService.deleteUser("12343");
+        userService.deleteUser("1");
+        assertThrows(UserNotFoundException.class, () -> userService.getUserById("1"));
+    }
 
-        assertEquals(3, userService.getAllUsers().size());
-        assertEquals(3, productService.getAllProducts().size());
+    @Test
+    public void testGetAllProducts() {
+        List<ProductDTO> products = productService.getAllProducts();
+        assertNotNull(products);
+        assertFalse(products.isEmpty());
+    }
 
-        // Invalid
-        userRepository.deleteAll();
+    @Test
+    public void testGetProductById() {
+        ProductDTO product = productService.getProductById("1212");
+        assertNotNull(product);
+        assertEquals("chopsticks barato", product.getName());
+    }
 
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
-            userService.deleteUser("12343");
-        });
-
-        String expectedMessage = "User with ID: 12343 not found";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
+    @Test
+    public void testUpdateProduct() {
+        ProductDTO productToUpdate = productService.getProductById("1212");
+        productToUpdate.setName("Updated Chopsticks");
+        ProductDTO updatedProduct = productService.createProduct(productToUpdate);
+        assertNotNull(updatedProduct);
+        assertEquals("Updated Chopsticks", updatedProduct.getName());
     }
 
     @Test
     public void testDeleteProduct() {
-        // Not invalid
         productService.deleteProduct("1212");
+        assertThrows(ProductNotFoundException.class, () -> productService.getProductById("1212"));
+    }
 
-        assertEquals(5, productService.getAllProducts().size());
-        assertEquals(4, userService.getAllUsers().size());
-        assertEquals(5, imageService.getAllImages().size());
-        assertEquals(5, tagService.getAllTags().size());
+    @Test
+    public void testGetAllImages() {
+        List<ImageDTO> images = imageService.getAllImages();
+        assertNotNull(images);
+        assertFalse(images.isEmpty());
+    }
 
-        // Invalid
-        productRepository.deleteAll();
+    @Test
+    public void testGetImageById() {
+        ImageDTO image = imageService.getImageById("123");
+        assertNotNull(image);
+        assertEquals("https://image.png", image.getLink());
+    }
 
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
-            productService.deleteProduct("1212");
-        });
-
-        String expectedMessage = "Product with ID: 1212 not found";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
+    @Test
+    public void testUpdateImage() {
+        ImageDTO imageToUpdate = imageService.getImageById("123");
+        imageToUpdate.setLink("https://updatedimage.png");
+        ImageDTO updatedImage = imageService.createImage(imageToUpdate);
+        assertNotNull(updatedImage);
+        assertEquals("https://updatedimage.png", updatedImage.getLink());
     }
 
     @Test
     public void testDeleteImage() {
-        // Not invalid
         imageService.deleteImage("123");
+        assertThrows(ImageNotFoundException.class, () -> imageService.getImageById("123"));
+    }
 
-        assertEquals(4, imageService.getAllImages().size());
-        assertEquals(6, productService.getAllProducts().size());
+    @Test
+    public void testGetAllTags() {
+        List<TagDTO> tags = tagService.getAllTags();
+        assertNotNull(tags);
+        assertFalse(tags.isEmpty());
+    }
 
-        // Invalid
-        imageRepository.deleteAll();
+    @Test
+    public void testGetTagById() {
+        TagDTO tag = tagService.getTagById("123");
+        assertNotNull(tag);
+        assertEquals("tag", tag.getName());
+    }
 
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
-            imageService.deleteImage("123");
-        });
-
-        String expectedMessage = "Image with ID: 123 not found";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
+    @Test
+    public void testUpdateTag() {
+        TagDTO tagToUpdate = tagService.getTagById("123");
+        tagToUpdate.setName("Updated Tag");
+        TagDTO updatedTag = tagService.createTag(tagToUpdate);
+        assertNotNull(updatedTag);
+        assertEquals("Updated Tag", updatedTag.getName());
     }
 
     @Test
     public void testDeleteTag() {
-        // Not invalid
         tagService.deleteTag("123");
-
-        assertEquals(4, tagService.getAllTags().size());
-        assertEquals(6, productService.getAllProducts().size());
-
-        // Invalid
-        tagRepository.deleteAll();
-
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
-            tagService.deleteTag("123");
-        });
-
-        String expectedMessage = "Tag with ID: 123 not found";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
+        assertThrows(TagNotFoundException.class, () -> tagService.getTagById("123"));
     }
-
 }

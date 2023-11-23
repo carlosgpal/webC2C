@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,6 +37,7 @@ public class Product {
     private String place;
 
     @ManyToMany(cascade = { CascadeType.ALL })
+    @JsonBackReference
     @JoinTable(name = "product_has_image", joinColumns = {
             @JoinColumn(name = "product_idproduct") }, inverseJoinColumns = {
                     @JoinColumn(name = "image_idimage") })
@@ -50,6 +54,7 @@ public class Product {
     }
 
     @ManyToMany(cascade = { CascadeType.ALL })
+    @JsonBackReference
     @JoinTable(name = "product_has_tag", joinColumns = {
             @JoinColumn(name = "product_idproduct") }, inverseJoinColumns = {
                     @JoinColumn(name = "tag_idtag") })
@@ -66,6 +71,7 @@ public class Product {
     }
 
     @ManyToMany(cascade = { CascadeType.ALL }, mappedBy = "products")
+    @JsonManagedReference
     private List<User> users = new ArrayList<User>();
 
     public Product() {

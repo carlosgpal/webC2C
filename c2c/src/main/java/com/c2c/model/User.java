@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class User {
 
@@ -38,6 +40,7 @@ public class User {
     private String verifylink;
 
     @ManyToMany(cascade = { CascadeType.ALL })
+    @JsonBackReference
     @JoinTable(name = "user_has_product", joinColumns = { @JoinColumn(name = "user_iduser") }, inverseJoinColumns = {
             @JoinColumn(name = "product_idproduct") })
     private List<Product> products = new ArrayList<Product>();

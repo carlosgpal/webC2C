@@ -2,6 +2,7 @@ package com.c2c.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.c2c.dto.UserDTO;
 import com.c2c.model.Product;
 import com.c2c.model.User;
 import com.c2c.repository.UserRepository;
@@ -28,26 +29,20 @@ public class UserController {
 
     // Get all users
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
+    public List<UserDTO> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     // Get user by Id
     @GetMapping("/{iduser}")
-    public ResponseEntity<User> getUserById(@PathVariable String iduser) {
-        User user = userService.getUserById(iduser);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(user);
+    public UserDTO getUserById(@PathVariable String iduser) {
+        return userService.getUserById(iduser);
     }
 
     // Create a New User
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User newUser) {
-        User user = userService.createUser(newUser);
-        return ResponseEntity.ok(user);
+    public UserDTO createUser(@RequestBody UserDTO newUser) {
+        return userService.createUser(newUser);
     }
 
     // // Update a User

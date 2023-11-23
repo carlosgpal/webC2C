@@ -11,6 +11,8 @@ import jakarta.persistence.ManyToMany;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Image {
     @Id
@@ -20,6 +22,7 @@ public class Image {
     private String link;
 
     @ManyToMany(mappedBy = "images", cascade = { CascadeType.ALL })
+    @JsonManagedReference
     private List<Product> products = new ArrayList<Product>();
 
     public Image() {

@@ -12,13 +12,13 @@ public class UserDTO {
     private LocalDateTime lasttime;
     private boolean isverify;
     private String verifylink;
-    private List<String> productIds;
+    private List<ProductDTO> products;
 
     public UserDTO() {
     }
 
     public UserDTO(String iduser, String name, String email, String pass, LocalDateTime lasttime, boolean isverify,
-            String verifylink, List<String> productIds) {
+            String verifylink, List<ProductDTO> products) {
         this.iduser = iduser;
         this.name = name;
         this.email = email;
@@ -26,7 +26,7 @@ public class UserDTO {
         this.lasttime = lasttime;
         this.isverify = isverify;
         this.verifylink = verifylink;
-        this.productIds = productIds;
+        this.products = products;
     }
 
     public String getIduser() {
@@ -85,12 +85,12 @@ public class UserDTO {
         this.verifylink = verifylink;
     }
 
-    public List<String> getProductIds() {
-        return productIds;
+    public List<ProductDTO> getProducts() {
+        return products;
     }
 
-    public void setProductIds(List<String> productIds) {
-        this.productIds = productIds;
+    public void setProducts(List<ProductDTO> productIds) {
+        this.products = productIds;
     }
 
 }

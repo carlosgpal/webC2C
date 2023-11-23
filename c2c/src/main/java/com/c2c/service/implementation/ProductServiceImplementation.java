@@ -1,16 +1,26 @@
 package com.c2c.service.implementation;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.c2c.dto.ImageDTO;
+import com.c2c.dto.ProductDTO;
+import com.c2c.dto.TagDTO;
 import com.c2c.model.Product;
+import com.c2c.repository.ImageRepository;
 import com.c2c.repository.ProductRepository;
+import com.c2c.repository.TagRepository;
 import com.c2c.service.ProductService;
+import com.c2c.service.exception.ProductNotFoundException;
+import com.c2c.service.exception.TechnicalException;
 
 @Service
 public class ProductServiceImplementation implements ProductService {
@@ -18,84 +28,71 @@ public class ProductServiceImplementation implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ImageRepository imageRepository;
+
+    @Autowired
+    private TagRepository tagRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Override
-    public List<Product> getAllProducts() {
-        List<Product> products = productRepository.findAll();
-        if (products.isEmpty()) {
-            throw new EntityNotFoundException("No products found");
+    public List<ProductDTO> getAllProducts() {
+        List<Product> listProductsEntity = productRepository.findAll();
+        List<ProductDTO> listProductDTO = listProductsEntity.stream()
+                .map(product -> modelMapper.map(product, ProductDTO.class))
+                .collect(Collectors.toList());
+        return listProductDTO;
+    }
+
+    @Override
+    public ProductDTO getProductById(String idproduct) {
+        ProductDTO productDTO = null;
+        try {
+            Product productEntity = productRepository.findByIdproduct(idproduct);
+            modelMapper.map(productEntity, ProductDTO.class);
+        } catch (EntityNotFoundException e) {
+            throw new ProductNotFoundException(idproduct, e);
+        } catch (Exception e) {
+            throw new TechnicalException(e);
         }
-        return products;
+        return productDTO;
     }
 
     @Override
-    @Transactional
-    public Product getProductById(String idproduct) {
-        Product product = productRepository.findById(idproduct)
-                .orElseThrow(() -> new EntityNotFoundException("Product with ID: " + idproduct + " not found"));
-        return product;
-    }
+    public ProductDTO createProduct(ProductDTO product) {
+        Product productEntity = modelMapper.map(product, Product.class);
 
-    @Override
-    public Product createProduct(Product newProduct) {
-        validateProduct(newProduct);
+        if (product.getIdproduct() == null) {
+            List<String> ids1 = new ArrayList<String>();
+            for (ImageDTO image : product.getImages()) {
+                ids1.add(image.getIdimage());
+            }
+            productEntity.setImages(imageRepository.findByImages(ids1));
 
-        return productRepository.save(newProduct);
-    }
-
-    @Override
-    public Product createOrUpdateProduct(String idproduct, Product newProduct) {
-        if (productRepository.existsById(idproduct)) {
-            return updateProduct(idproduct, newProduct);
+            List<String> ids2 = new ArrayList<String>();
+            for (TagDTO tag : product.getTags()) {
+                ids2.add(tag.getIdtag());
+            }
+            productEntity.setTags(tagRepository.findByTags(ids2));
         } else {
-            return createProduct(newProduct);
+            productEntity = productRepository.findByIdproduct(product.getIdproduct());
+            productEntity = modelMapper.map(product, Product.class);
         }
+        productEntity = productRepository.save(productEntity);
+        return modelMapper.map(productEntity, ProductDTO.class);
     }
 
     @Override
-    public Product updateProduct(String idproduct, Product newProduct) {
-        validateProduct(newProduct);
-
-        productRepository.findById(idproduct)
-                .orElseThrow(() -> new EntityNotFoundException("Product with ID: " + idproduct + " not found"));
-
-        newProduct.setIdproduct(idproduct);
-        return productRepository.save(newProduct);
-    }
-
-    @Override
-    @Transactional
-    public Product deleteProduct(String idproduct) {
-        Product product = productRepository.findById(idproduct)
-                .orElseThrow(() -> new EntityNotFoundException("Product with ID: " + idproduct + " not found"));
-
-        product.getUsers().clear();
-        product.getImages().clear();
-        product.getTags().clear();
-        productRepository.save(product);
-
-        productRepository.delete(product);
-
-        return product;
-    }
-
-    private void validateProduct(Product product) {
-        if (product == null) {
-            throw new IllegalArgumentException("Product cannot be null");
-        }
-        if (product.getIdproduct() == null || product.getIdproduct().trim().isEmpty()) {
-            throw new IllegalArgumentException("Product id cannot be empty");
-        }
-        if (product.getName() == null || product.getName().trim().isEmpty()) {
-            throw new IllegalArgumentException("Product name cannot be empty");
-        }
-        if (product.getDescription() == null || product.getDescription().trim().isEmpty()) {
-            throw new IllegalArgumentException("Product description cannot be empty");
-        }
-        if (product.getDate() == null) {
-            throw new IllegalArgumentException("Product date cannot be empty");
-        }
-        if (product.getPlace() == null || product.getPlace().trim().isEmpty()) {
-            throw new IllegalArgumentException("Product place cannot be empty");
+    public void deleteProduct(String idproduct) {
+        try {
+            productRepository.deleteById(idproduct);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ProductNotFoundException(idproduct, e);
+        } catch (Exception e) {
+            throw new TechnicalException(e);
         }
     }
+
 }

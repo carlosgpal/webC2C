@@ -2,18 +2,14 @@ package com.c2c.service;
 
 import java.util.List;
 
-import com.c2c.model.Tag;
+import com.c2c.dto.TagDTO;
 
 public interface TagService {
-    public List<Tag> getAllTags();
+    public List<TagDTO> getAllTags();
 
-    public Tag getTagById(String idtag);
+    public TagDTO getTagById(String idtag);
 
-    public Tag createTag(Tag newTag);
+    public TagDTO createTag(TagDTO newTag);
 
-    public Tag createOrUpdateTag(String idtag, Tag newTag);
-
-    public Tag updateTag(String idtag, Tag newTag);
-
-    public Tag deleteTag(String idtag);
+    public void deleteTag(String idtag);
 }

@@ -2,18 +2,14 @@ package com.c2c.service;
 
 import java.util.List;
 
-import com.c2c.model.User;
+import com.c2c.dto.UserDTO;
 
 public interface UserService {
-    public List<User> getAllUsers();
+    public List<UserDTO> getAllUsers();
 
-    public User getUserById(String iduser);
+    public UserDTO getUserById(String iduser);
 
-    public User createUser(User newUser);
+    public UserDTO createUser(UserDTO newUser);
 
-    public User createOrUpdateUser(String iduser, User newUser);
-
-    public User updateUser(String iduser, User newUser);
-
-    public User deleteUser(String iduser);
+    public void deleteUser(String iduser);
 }

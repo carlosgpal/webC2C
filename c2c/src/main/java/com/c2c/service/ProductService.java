@@ -2,18 +2,14 @@ package com.c2c.service;
 
 import java.util.List;
 
-import com.c2c.model.Product;
+import com.c2c.dto.ProductDTO;
 
 public interface ProductService {
-    public List<Product> getAllProducts();
+    public List<ProductDTO> getAllProducts();
 
-    public Product getProductById(String idproduct);
+    public ProductDTO getProductById(String idproduct);
 
-    public Product createProduct(Product newProduct);
+    public ProductDTO createProduct(ProductDTO newProduct);
 
-    public Product createOrUpdateProduct(String idproduct, Product newProduct);
-
-    public Product updateProduct(String idproduct, Product newProduct);
-
-    public Product deleteProduct(String idproduct);
+    public void deleteProduct(String idproduct);
 }

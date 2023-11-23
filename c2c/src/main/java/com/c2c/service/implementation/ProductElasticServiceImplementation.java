@@ -63,6 +63,26 @@ public class ProductElasticServiceImplementation implements ProductElasticServic
         return productElasticRepository.save(newProduct);
     }
 
+    @Override
+    public ProductElastic deleteProductElastic(String idproduct) throws IOException {
+        ProductElastic productElastic = productElasticRepository.findById(idproduct)
+                .orElseThrow(() -> new EntityNotFoundException("ProductElastic with ID: " + idproduct + " not found"));
+
+        productElasticRepository.delete(productElastic);
+
+        return productElastic;
+    }
+
+    @Override
+    public List<ProductElastic> getProductsElasticByUser(String iduser) throws IOException {
+        return productElasticRepository.findByUser(iduser);
+    }
+
+    @Override
+    public List<ProductElastic> getProductsElasticByTags(List<String> idtags) throws IOException {
+        return productElasticRepository.findByTagsIn(idtags);
+    }
+
     private void validateProductElastic(ProductElastic productElastic) {
         if (productElastic == null) {
             throw new IllegalArgumentException("ProductElastic cannot be null");
@@ -85,26 +105,6 @@ public class ProductElasticServiceImplementation implements ProductElasticServic
         if (productElastic.getUser() == null || productElastic.getUser().trim().isEmpty()) {
             throw new IllegalArgumentException("ProductElastic users cannot be empty");
         }
-    }
-
-    @Override
-    public ProductElastic deleteProductElastic(String idproduct) throws IOException {
-        ProductElastic productElastic = productElasticRepository.findById(idproduct)
-                .orElseThrow(() -> new EntityNotFoundException("ProductElastic with ID: " + idproduct + " not found"));
-
-        productElasticRepository.delete(productElastic);
-
-        return productElastic;
-    }
-
-    @Override
-    public List<ProductElastic> getProductsElasticByUser(String iduser) throws IOException {
-        return productElasticRepository.findByUser(iduser);
-    }
-
-    @Override
-    public List<ProductElastic> getProductsElasticByTags(List<String> idtags) throws IOException {
-        return productElasticRepository.findByTagsIn(idtags);
     }
 
 }

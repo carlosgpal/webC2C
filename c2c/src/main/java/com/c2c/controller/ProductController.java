@@ -2,6 +2,8 @@ package com.c2c.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.c2c.dto.ProductDTO;
+import com.c2c.dto.UserDTO;
 import com.c2c.model.Product;
 import com.c2c.model.ProductElastic;
 import com.c2c.repository.ProductRepository;
@@ -29,29 +31,21 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    // Get all products
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
-        return ResponseEntity.ok(products);
+    public List<ProductDTO> getAllProducts() {
+        return productService.getAllProducts();
     }
 
-    // Get product by Id
+    // Get user by Id
     @GetMapping("/{idproduct}")
-    public ResponseEntity<Product> getProductById(@PathVariable String idproduct) {
-        Product product = productService.getProductById(idproduct);
-        if (product == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(product);
+    public ProductDTO getProductById(@PathVariable String idproduct) {
+        return productService.getProductById(idproduct);
     }
 
-    // Create a New Product
+    // Create a New User
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product newProduct) throws IOException {
-        Product product = productService.createProduct(newProduct);
-
-        return ResponseEntity.ok(product);
+    public ProductDTO createProduct(@RequestBody ProductDTO newProduct) {
+        return productService.createProduct(newProduct);
     }
 
     // // Update a Product
