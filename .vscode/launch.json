@@ -1,14 +1,31 @@
 {
-    "configurations": [
-        {
-            "type": "java",
-            "name": "Spring Boot-App<c2c>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.c2c.App",
-            "projectName": "c2c",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        }
-    ]
+  "configurations": [
+    {
+      "type": "java",
+      "name": "App",
+      "request": "launch",
+      "mainClass": "com.backend.App",
+      "projectName": ""
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-App<c2c>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.c2c.App",
+      "projectName": "c2c",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-App<backend>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.backend.App",
+      "projectName": "backend",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
 }
