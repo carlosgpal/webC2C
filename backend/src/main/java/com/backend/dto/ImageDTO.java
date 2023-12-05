@@ -1,5 +1,6 @@
 package com.backend.dto;
 
+// This is the DTO for the Image model of the MySQL database
 public class ImageDTO {
 
     private String idimage;

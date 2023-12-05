@@ -19,6 +19,7 @@ import com.backend.service.TagService;
 import com.backend.service.exception.TagNotFoundException;
 import com.backend.service.exception.TechnicalException;
 
+// This is a service that implements the methods of the TagService interface
 @Service
 public class TagServiceImplementation implements TagService {
 
@@ -31,6 +32,7 @@ public class TagServiceImplementation implements TagService {
     @Autowired
     private ModelMapper modelMapper;
 
+    // Get all tags
     @Override
     public List<TagDTO> getAllTags() {
         List<Tag> listTagsEntity = tagRepository.findAll();
@@ -40,6 +42,7 @@ public class TagServiceImplementation implements TagService {
         return listTagDTO;
     }
 
+    // Get tag by ID
     @Override
     public TagDTO getTagById(String idtag) {
         TagDTO tagDTO = null;
@@ -54,6 +57,7 @@ public class TagServiceImplementation implements TagService {
         return tagDTO;
     }
 
+    // Create a new tag
     @Override
     public TagDTO createTag(TagDTO tag) {
         Tag tagEntity = modelMapper.map(tag, Tag.class);
@@ -61,18 +65,25 @@ public class TagServiceImplementation implements TagService {
         return modelMapper.map(tagEntity, TagDTO.class);
     }
 
+    // Delete a tag, when the tag is deleted, the products associated with the tag
+    // are not deleted
     @Override
     @Transactional
     public void deleteTag(String idtag) {
         try {
             Tag tagEntity = tagRepository.findByIdtag(idtag);
 
+            // Remove the tag from associated products
             tagEntity.getProducts().forEach(product -> {
                 product = productRepository.findByIdproduct(product.getIdproduct());
                 product.getTags().remove(tagEntity);
                 productRepository.save(product);
             });
+
+            // Clear the products associated with the tag
             tagEntity.getProducts().clear();
+
+            // Delete the tag
             tagRepository.delete(tagEntity);
         } catch (EmptyResultDataAccessException e) {
             throw new TagNotFoundException(idtag, e);

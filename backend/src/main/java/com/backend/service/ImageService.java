@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.backend.dto.ImageDTO;
 
+// This is the port from the ImageRepository to the ImageController
 public interface ImageService {
     public List<ImageDTO> getAllImages();
 

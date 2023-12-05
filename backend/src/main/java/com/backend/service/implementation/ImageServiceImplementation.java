@@ -19,6 +19,7 @@ import com.backend.service.ImageService;
 import com.backend.service.exception.ImageNotFoundException;
 import com.backend.service.exception.TechnicalException;
 
+// This is a service that implements the methods of the ImageService interface
 @Service
 public class ImageServiceImplementation implements ImageService {
 
@@ -31,6 +32,7 @@ public class ImageServiceImplementation implements ImageService {
     @Autowired
     private ModelMapper modelMapper;
 
+    // Get all images
     @Override
     public List<ImageDTO> getAllImages() {
         List<Image> listImagesEntity = imageRepository.findAll();
@@ -40,6 +42,7 @@ public class ImageServiceImplementation implements ImageService {
         return listImageDTO;
     }
 
+    // Get image by ID
     @Override
     public ImageDTO getImageById(String idimage) {
         ImageDTO imageDTO = null;
@@ -54,6 +57,7 @@ public class ImageServiceImplementation implements ImageService {
         return imageDTO;
     }
 
+    // Create a new image
     @Override
     public ImageDTO createImage(ImageDTO image) {
         Image imageEntity = modelMapper.map(image, Image.class);
@@ -61,6 +65,8 @@ public class ImageServiceImplementation implements ImageService {
         return modelMapper.map(imageEntity, ImageDTO.class);
     }
 
+    // Delete an image, when an image is deleted, it is removed from all products
+    // but products are not deleted
     @Override
     @Transactional
     public void deleteImage(String idimage) {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.backend.dto.TagDTO;
 
+// This is the port from the TagRepository to the TagController
 public interface TagService {
     public List<TagDTO> getAllTags();
 

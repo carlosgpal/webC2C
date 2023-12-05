@@ -13,6 +13,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+// This is the model class for the Image table in the database
 @Entity
 public class Image {
     @Id
@@ -21,7 +22,9 @@ public class Image {
     @Column(length = 45, nullable = false)
     private String link;
 
+    // This is the many-to-many relationship between the Image and Product tables
     @ManyToMany(mappedBy = "images", cascade = { CascadeType.ALL })
+    // Control the bidirectional association
     @JsonManagedReference
     private List<Product> products = new ArrayList<Product>();
 

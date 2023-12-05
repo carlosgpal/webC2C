@@ -3,6 +3,7 @@ package com.backend.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
+// This is the DTO for the Product model of the MySQL database
 public class ProductDTO {
 
     private String idproduct;

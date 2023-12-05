@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.backend.model.ProductElastic;
 
+// This is the port from the ProductElasticRepository to the ProductElasticController
 public interface ProductElasticService {
     public List<ProductElastic> getAllProductsElastic() throws IOException;
 

@@ -12,6 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 
+// This is the model class for the Tag table in the database
 @Entity
 public class Tag {
     @Id
@@ -20,7 +21,9 @@ public class Tag {
     @Column(length = 45, nullable = false)
     private String name;
 
+    // This is the many-to-many relationship between the Product and Tag tables
     @ManyToMany(mappedBy = "tags", cascade = { CascadeType.ALL })
+    // Control the bidirectional association
     @JsonManagedReference
     private List<Product> products = new ArrayList<Product>();
 

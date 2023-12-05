@@ -9,10 +9,13 @@ import org.springframework.stereotype.Repository;
 
 import com.backend.model.Product;
 
+// This is the repository for the Product model of the MySQL database
 @Repository
 public interface ProductRepository extends JpaRepository<Product, String> {
     Product findByIdproduct(String idproduct);
 
+    // This is a custom query that returns a list of products that match the ids
+    // passed
     @Query("select p from Product p where p.idproduct in :ids")
     List<Product> findByProducts(@Param("ids") List<String> ids);
 }

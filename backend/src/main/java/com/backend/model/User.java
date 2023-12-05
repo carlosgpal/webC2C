@@ -15,6 +15,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+// This is the model class for the User table in the database
 @Entity
 public class User {
 
@@ -39,7 +40,9 @@ public class User {
     @Column(length = 45)
     private String verifylink;
 
+    // This is the many-to-many relationship between the User and Product tables
     @ManyToMany(cascade = { CascadeType.ALL })
+    // Control the bidirectional association
     @JsonBackReference
     @JoinTable(name = "user_has_product", joinColumns = { @JoinColumn(name = "user_iduser") }, inverseJoinColumns = {
             @JoinColumn(name = "product_idproduct") })

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.backend.dto.UserDTO;
 
+// This is the port from the UserRepository to the UserController
 public interface UserService {
     public List<UserDTO> getAllUsers();
 

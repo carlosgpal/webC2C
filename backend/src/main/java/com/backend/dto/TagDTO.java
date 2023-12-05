@@ -1,5 +1,6 @@
 package com.backend.dto;
 
+// This is the DTO for the Tag model of the MySQL database
 public class TagDTO {
 
     private String idtag;

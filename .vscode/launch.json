@@ -9,16 +9,6 @@
     },
     {
       "type": "java",
-      "name": "Spring Boot-App<c2c>",
-      "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "mainClass": "com.c2c.App",
-      "projectName": "c2c",
-      "args": "",
-      "envFile": "${workspaceFolder}/.env"
-    },
-    {
-      "type": "java",
       "name": "Spring Boot-App<backend>",
       "request": "launch",
       "cwd": "${workspaceFolder}",

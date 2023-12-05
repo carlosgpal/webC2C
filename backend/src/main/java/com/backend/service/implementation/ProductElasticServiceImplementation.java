@@ -13,12 +13,14 @@ import com.backend.model.ProductElastic;
 import com.backend.repository.ProductElasticRepository;
 import com.backend.service.ProductElasticService;
 
+// This is a service that implements the methods of the ProductElasticService interface
 @Service
 public class ProductElasticServiceImplementation implements ProductElasticService {
 
     @Autowired
     private ProductElasticRepository productElasticRepository;
 
+    // Get all products from Elasticsearch
     @Override
     public List<ProductElastic> getAllProductsElastic() throws IOException {
         Iterable<ProductElastic> productsElasticIterable = productElasticRepository.findAll();
@@ -30,12 +32,14 @@ public class ProductElasticServiceImplementation implements ProductElasticServic
         return productsElastic;
     }
 
+    // Get a product from Elasticsearch by ID
     @Override
     public ProductElastic getProductElasticById(String idproduct) throws IOException {
         return productElasticRepository.findById(idproduct)
                 .orElseThrow(() -> new EntityNotFoundException("ProductElastic with ID: " + idproduct + " not found"));
     }
 
+    // Create a new product in Elasticsearch
     @Override
     public ProductElastic createProductElastic(ProductElastic newProduct) throws IOException {
         validateProductElastic(newProduct);
@@ -49,6 +53,7 @@ public class ProductElasticServiceImplementation implements ProductElasticServic
         return productElasticRepository.save(newProduct);
     }
 
+    // Create or update a product in Elasticsearch
     @Override
     public ProductElastic createOrUpdateProductElastic(String idproduct, ProductElastic newProduct) throws IOException {
         if (productElasticRepository.existsById(idproduct)) {
@@ -58,6 +63,7 @@ public class ProductElasticServiceImplementation implements ProductElasticServic
         }
     }
 
+    // Update a product in Elasticsearch
     @Override
     public ProductElastic updateProductElastic(String idproduct, ProductElastic newProduct) throws IOException {
         validateProductElastic(newProduct);
@@ -69,6 +75,7 @@ public class ProductElasticServiceImplementation implements ProductElasticServic
         return productElasticRepository.save(newProduct);
     }
 
+    // Delete a product from Elasticsearch
     @Override
     public ProductElastic deleteProductElastic(String idproduct) throws IOException {
         ProductElastic productElastic = productElasticRepository.findById(idproduct)
@@ -79,6 +86,7 @@ public class ProductElasticServiceImplementation implements ProductElasticServic
         return productElastic;
     }
 
+    // Get products from Elasticsearch by user ID
     @Override
     public List<ProductElastic> getProductsElasticByUser(String iduser) throws IOException {
         List<ProductElastic> productsElastic = productElasticRepository.findByUser(iduser);
@@ -88,6 +96,7 @@ public class ProductElasticServiceImplementation implements ProductElasticServic
         return productsElastic;
     }
 
+    // Get products from Elasticsearch by tags
     @Override
     public List<ProductElastic> getProductsElasticByTags(List<String> idtags) throws IOException {
         List<ProductElastic> productsElastic = productElasticRepository.findByTagsIn(idtags);
@@ -97,6 +106,7 @@ public class ProductElasticServiceImplementation implements ProductElasticServic
         return productsElastic;
     }
 
+    // Validate the fields of a ProductElastic object
     private void validateProductElastic(ProductElastic productElastic) {
         if (productElastic == null) {
             throw new IllegalArgumentException("ProductElastic cannot be null");

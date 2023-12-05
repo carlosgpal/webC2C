@@ -12,14 +12,17 @@ import org.springframework.context.annotation.Configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+// Configuration class to set up beans for elasticSearchdb
 @Configuration
 public class ElasticSearchConfiguration {
 
     private final ElasticsearchProperties elasticsearchProperties;
 
+    // RestClient bean to connect to the elasticSearchdb
     @Autowired
     private ObjectMapper objectMapper;
 
+    // Switch between the different elasticSearchdb builds
     public ElasticSearchConfiguration(ElasticsearchProperties elasticsearchProperties) {
         this.elasticsearchProperties = elasticsearchProperties;
     }

@@ -16,6 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 
+// This is the model class for the Product table in the database
 @Entity
 public class Product {
     @Id
@@ -36,7 +37,9 @@ public class Product {
     @Column(length = 45, nullable = true)
     private String place;
 
+    // This is the many-to-many relationship between the Product and Image tables
     @ManyToMany(cascade = { CascadeType.ALL })
+    // Control the bidirectional association
     @JsonBackReference
     @JoinTable(name = "product_has_image", joinColumns = {
             @JoinColumn(name = "product_idproduct") }, inverseJoinColumns = {
@@ -53,7 +56,9 @@ public class Product {
         image.getProducts().remove(this);
     }
 
+    // This is the many-to-many relationship between the Product and Tag tables
     @ManyToMany(cascade = { CascadeType.ALL })
+    // Control the bidirectional association
     @JsonBackReference
     @JoinTable(name = "product_has_tag", joinColumns = {
             @JoinColumn(name = "product_idproduct") }, inverseJoinColumns = {
@@ -70,7 +75,9 @@ public class Product {
         tag.getProducts().remove(this);
     }
 
+    // This is the many-to-many relationship between the Product and User tables
     @ManyToMany(cascade = { CascadeType.ALL }, mappedBy = "products")
+    // Control the bidirectional association
     @JsonManagedReference
     private List<User> users = new ArrayList<User>();
 

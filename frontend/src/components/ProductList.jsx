@@ -26,7 +26,7 @@ export default function ProductList() {
                 </Col>
             </Row>
             <Row>
-                <h1 className="text-white">Loading...</h1>
+                <h1 className="loading-text">Loading...</h1>
             </Row>
         </div>
     ) : (

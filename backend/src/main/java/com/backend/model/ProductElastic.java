@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+// This is the model class for the Product table in the elasticsearch database
 @Document(indexName = "product")
 public class ProductElastic {
     @Id
@@ -24,12 +25,13 @@ public class ProductElastic {
     @Field(type = FieldType.Double, name = "price")
     private double price;
 
-    @Field(type = FieldType.Date, name = "date", format = DateFormat.date_optional_time)
+    @Field(type = FieldType.Date, name = "date", format = DateFormat.date_time)
     private Date date;
 
     @Field(type = FieldType.Text, name = "place")
     private String place;
 
+    // Represents a nested object
     @Field(type = FieldType.Nested, name = "tags")
     private List<TagElastic> tags;
 

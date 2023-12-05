@@ -5,6 +5,7 @@ export default function CardProduct({ product }) {
     // Destructure the props for easier access
     const { name, date, place, idproduct, description, price, tags } = product;
 
+    // Function to render the tags
     const renderTags = (tags) => {
         return tags.map((tag, index) => (
             <div key={index} className="mb-1">
@@ -13,6 +14,7 @@ export default function CardProduct({ product }) {
         ));
     };
 
+    // Render the card product component
     return (
         <div className="cardProduct" style={{ width: '18rem', backgroundColor: 'cyan' }}>
             <div className="card-body">

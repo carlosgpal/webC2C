@@ -4,6 +4,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.util.Objects;
 
+// This is the model class for the Tag table in the elasticsearch database, it is used to store the tags of a product, a nested object
 public class TagElastic {
     @Field(type = FieldType.Keyword, name = "tag_name")
     private String tag_name;

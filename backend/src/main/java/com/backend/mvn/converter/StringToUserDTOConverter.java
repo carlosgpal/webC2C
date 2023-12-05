@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.backend.dto.UserDTO;
 import com.backend.service.UserService;
 
+// This is a converter that converts a String to a UserDTO
 @Component
 public class StringToUserDTOConverter implements Converter<String, UserDTO> {
     @Autowired

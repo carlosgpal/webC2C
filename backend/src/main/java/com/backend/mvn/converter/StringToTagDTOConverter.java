@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.backend.dto.TagDTO;
 import com.backend.service.TagService;
 
+// This is a converter that converts a String to a TagDTO
 @Component
 public class StringToTagDTOConverter implements Converter<String, TagDTO> {
     @Autowired

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.backend.dto.ProductDTO;
 
+// This is the port from the ProductRepository to the ProductController
 public interface ProductService {
     public List<ProductDTO> getAllProducts();
 
