@@ -25,11 +25,17 @@ public class ProductElastic {
     @Field(type = FieldType.Double, name = "price")
     private double price;
 
+    @Field(type = FieldType.Double, name = "rating")
+    private double rating;
+
     @Field(type = FieldType.Date, name = "date", format = DateFormat.date_time)
     private Date date;
 
     @Field(type = FieldType.Text, name = "place")
     private String place;
+
+    @Field(type = FieldType.Text, name = "thumbnailimg")
+    private String thumbnailimg;
 
     // Represents a nested object
     @Field(type = FieldType.Nested, name = "tags")
@@ -41,14 +47,16 @@ public class ProductElastic {
     public ProductElastic() {
     }
 
-    public ProductElastic(String idproduct, String name, String description, double price, Date date,
-            String place, List<TagElastic> tags, String user) {
+    public ProductElastic(String idproduct, String name, String description, double price, double rating, Date date,
+            String place, String thumbnailimg, List<TagElastic> tags, String user) {
         this.idproduct = idproduct;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.rating = rating;
         this.date = date;
         this.place = place;
+        this.thumbnailimg = thumbnailimg;
         this.tags = tags;
         this.user = user;
     }
@@ -85,6 +93,14 @@ public class ProductElastic {
         this.price = price;
     }
 
+    public double getRating() {
+        return this.rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
     public Date getDate() {
         return this.date;
     }
@@ -99,6 +115,14 @@ public class ProductElastic {
 
     public void setPlace(String place) {
         this.place = place;
+    }
+
+    public String getThumbnailimg() {
+        return this.thumbnailimg;
+    }
+
+    public void setThumbnailimg(String thumbnailimg) {
+        this.thumbnailimg = thumbnailimg;
     }
 
     public List<TagElastic> getTags() {
@@ -124,8 +148,10 @@ public class ProductElastic {
                 ", name='" + getName() + "'" +
                 ", description='" + getDescription() + "'" +
                 ", price='" + getPrice() + "'" +
+                ", rating='" + getRating() + "'" +
                 ", date='" + getDate() + "'" +
                 ", place='" + getPlace() + "'" +
+                ", thumbnailimg='" + getThumbnailimg() + "'" +
                 ", tags='" + getTags() + "'" +
                 ", user='" + getUser() + "'" +
                 "}";
@@ -147,7 +173,7 @@ public class ProductElastic {
 
     @Override
     public int hashCode() {
-        return Objects.hash(idproduct, name, description, price, date, place, tags, user);
+        return Objects.hash(idproduct, name, description, price, rating, date, place, thumbnailimg, tags, user);
     }
 
 }

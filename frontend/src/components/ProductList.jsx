@@ -4,6 +4,7 @@ import { getAllProducts } from "../utils/apicalls.js";
 
 import Header from "./Header.jsx";
 import CardProduct from "./CardProduct.jsx";
+import "./ProductList.css";
 
 export default function ProductList() {
     const [products, setProducts] = useState(null);
@@ -20,37 +21,26 @@ export default function ProductList() {
 
     return products === null ? (
         <div>
-            <Row>
-                <Col>
-                    <Header />
-                </Col>
-            </Row>
-            <Row>
-                <h1 className="loading-text">Loading...</h1>
-            </Row>
+            <Header />
+            <h1 className="loading-text">Loading...</h1>
         </div>
     ) : (
         <div>
-            <Row>
-                <Col>
-                    <Header />
-                </Col>
-            </Row>
+            <Header />
             <Container>
-                <CardTitle tag="center">
+                <CardTitle tag="h1" className="text-center">
                     <Badge pill color="dark">
                         Total products found: {products.length}
                     </Badge>
                 </CardTitle>
-                <Row>
-                    {products.map((product) => {
-                        return (
-                            <Col key={product.idproduct} xs="12" sm="6" md="4" lg="3">
-                                <CardProduct product={product} />
-                            </Col>
-                        );
-                    })}
-                </Row>
+                {/* Use the CSS class for the scrollable container */}
+                <div className="cards-container">
+                    <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
+                        {products.map((product) => (
+                            <CardProduct key={product.idproduct} product={product} />
+                        ))}
+                    </div>
+                </div>
             </Container>
         </div>
     );

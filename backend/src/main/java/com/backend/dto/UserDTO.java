@@ -8,6 +8,7 @@ public class UserDTO {
 
     private String iduser;
     private String name;
+    private String profilepic;
     private String email;
     private String pass;
     private LocalDateTime lasttime;
@@ -18,10 +19,12 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(String iduser, String name, String email, String pass, LocalDateTime lasttime, boolean isverify,
+    public UserDTO(String iduser, String name, String profilepic, String email, String pass, LocalDateTime lasttime,
+            boolean isverify,
             String verifylink, List<ProductDTO> products) {
         this.iduser = iduser;
         this.name = name;
+        this.profilepic = profilepic;
         this.email = email;
         this.pass = pass;
         this.lasttime = lasttime;
@@ -44,6 +47,14 @@ public class UserDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getProfilepic() {
+        return this.profilepic;
+    }
+
+    public void setProfilepic(String profilepic) {
+        this.profilepic = profilepic;
     }
 
     public String getEmail() {

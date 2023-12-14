@@ -19,7 +19,7 @@ public class Image {
     @Id
     private String idimage;
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 512, nullable = false)
     private String link;
 
     // This is the many-to-many relationship between the Image and Product tables

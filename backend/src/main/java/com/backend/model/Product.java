@@ -22,14 +22,17 @@ public class Product {
     @Id
     private String idproduct;
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 1024, nullable = false)
     private String name;
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 1024, nullable = false)
     private String description;
 
     @Column(nullable = false)
     private double price;
+
+    @Column(nullable = false)
+    private double rating;
 
     @Column(nullable = false)
     private LocalDateTime date;
@@ -84,12 +87,14 @@ public class Product {
     public Product() {
     }
 
-    public Product(String idproduct, String name, String description, double price, LocalDateTime date, String place,
+    public Product(String idproduct, String name, String description, double price, double rating, LocalDateTime date,
+            String place,
             List<Image> images, List<Tag> tags, List<User> users) {
         this.idproduct = idproduct;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.rating = rating;
         this.date = date;
         this.place = place;
         this.images = images;
@@ -97,11 +102,13 @@ public class Product {
         this.users = users;
     }
 
-    public Product(String idproduct, String name, String description, double price, LocalDateTime date, String place) {
+    public Product(String idproduct, String name, String description, double price, double rating, LocalDateTime date,
+            String place) {
         this.idproduct = idproduct;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.rating = rating;
         this.date = date;
         this.place = place;
     }
@@ -136,6 +143,14 @@ public class Product {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public double getRating() {
+        return this.rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
     public LocalDateTime getDate() {
@@ -185,6 +200,7 @@ public class Product {
                 ", name='" + getName() + "'" +
                 ", description='" + getDescription() + "'" +
                 ", price='" + getPrice() + "'" +
+                ", rating='" + getRating() + "'" +
                 ", date='" + getDate() + "'" +
                 ", place='" + getPlace() + "'" +
                 "}";
@@ -205,7 +221,7 @@ public class Product {
 
     @Override
     public int hashCode() {
-        return Objects.hash(idproduct, name, description, price, date, place);
+        return Objects.hash(idproduct, name, description, price, rating, date, place);
     }
 
 }

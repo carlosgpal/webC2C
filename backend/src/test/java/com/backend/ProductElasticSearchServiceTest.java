@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class ProductElasticSearchServiceTest {
+public class ProductElasticSearchServiceTest {
 
     @Autowired
     private ProductElasticService productElasticService;
@@ -38,22 +38,22 @@ class ProductElasticSearchServiceTest {
 
     // Define some static test products
     private static ProductElastic testProduct1 = new ProductElastic("1",
-            "testproduct1", "description112", 5.5,
-            new Date(123), "place", List.of(tag1, tag4,
+            "testproduct1", "description112", 5.5, 4.6,
+            new Date(123), "place", "ejemplo", List.of(tag1, tag4,
                     tag5),
             "1212");
     private static ProductElastic testProduct2 = new ProductElastic("2",
-            "testproduct2", "description112", 5.5,
-            new Date(123), "place", List.of(tag3, tag4,
+            "testproduct2", "description112", 5.5, 2.3,
+            new Date(123), "place", "ejemplo", List.of(tag3, tag4,
                     tag5),
             "1212");
     private static ProductElastic testProduct3 = new ProductElastic("3",
-            "testproduct3", "description112", 5.5,
-            new Date(123), "place", List.of(tag1, tag2),
+            "testproduct3", "description112", 5.5, 5.0,
+            new Date(123), "place", "ejemplo", List.of(tag1, tag2),
             "1212");
     private static ProductElastic testProduct4 = new ProductElastic("4",
-            "testproduct4", "description112", 5.5,
-            new Date(123), "place", List.of(tag1, tag2, tag3,
+            "testproduct4", "description112", 5.5, 3.2,
+            new Date(123), "place", "ejemplo", List.of(tag1, tag2, tag3,
                     tag4, tag5),
             "1213");
 
@@ -102,8 +102,8 @@ class ProductElasticSearchServiceTest {
     public void testCreateProductElastic() throws IOException {
         // Test creating a new product
         ProductElastic newProduct = new ProductElastic("5", "testproduct5",
-                "description112", 5.5,
-                new Date(123), "place", List.of(tag1, tag2, tag3,
+                "description112", 5.5, 4.6,
+                new Date(123), "place", "ejemplo", List.of(tag1, tag2, tag3,
                         tag4, tag5),
                 "1212");
         ProductElastic createdProduct = productElasticService.createProductElastic(newProduct);
@@ -131,8 +131,8 @@ class ProductElasticSearchServiceTest {
 
         // Test creating a new product
         ProductElastic newProduct = new ProductElastic("6", "testproduct6",
-                "description112", 5.5,
-                new Date(123), "place", List.of(tag1, tag2, tag3,
+                "description112", 5.5, 4.6,
+                new Date(123), "place", "ejemplo", List.of(tag1, tag2, tag3,
                         tag4, tag5),
                 "1212");
         ProductElastic createdProduct = productElasticService.createOrUpdateProductElastic("2", newProduct);
@@ -188,7 +188,9 @@ class ProductElasticSearchServiceTest {
     @Test
     public void testGetProductsElasticByTags() throws IOException {
         // Test getting products by tags
-        List<ProductElastic> productsByTags = productElasticService.getProductsElasticByTags(List.of("tag1", "tag2"));
+        List<ProductElastic> productsByTags = productElasticService
+                .getProductsElasticByTags(List.of("bicicleta", "moto"));
+
         assertEquals(3, productsByTags.size());
 
         // Test getting products by non-existing tag
@@ -197,6 +199,15 @@ class ProductElasticSearchServiceTest {
         });
         String expectedMessage = "No productsElastic found for tags: [non-existing-tag]";
         assertTrue(exception.getMessage().contains(expectedMessage));
+    }
+
+    @Test
+    public void testGetProductsByNameOrDescription() throws IOException {
+        // Test getting products by name or description
+        List<ProductElastic> productsByNameOrDescription = productElasticService
+                .searchProductsByNameOrDescription("description112");
+
+        assertEquals(4, productsByNameOrDescription.size());
     }
 
 }

@@ -22,4 +22,6 @@ public interface ProductElasticService {
     public List<ProductElastic> getProductsElasticByUser(String iduser) throws IOException;
 
     public List<ProductElastic> getProductsElasticByTags(List<String> idtags) throws IOException;
+
+    public List<ProductElastic> searchProductsByNameOrDescription(String query) throws IOException;
 }

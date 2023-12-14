@@ -25,6 +25,9 @@ public class User {
     @Column(length = 45, nullable = false, unique = true)
     private String name;
 
+    @Column(length = 512)
+    private String profilepic;
+
     @Column(length = 45, nullable = false, unique = true)
     private String email;
 
@@ -61,11 +64,13 @@ public class User {
     public User() {
     }
 
-    public User(String iduser, String name, String email, String pass, LocalDateTime lasttime, boolean isverify,
+    public User(String iduser, String name, String profilepic, String email, String pass, LocalDateTime lasttime,
+            boolean isverify,
             String verifylink,
             List<Product> products) {
         this.iduser = iduser;
         this.name = name;
+        this.profilepic = profilepic;
         this.email = email;
         this.pass = pass;
         this.lasttime = lasttime;
@@ -74,10 +79,12 @@ public class User {
         this.products = products;
     }
 
-    public User(String iduser, String name, String email, String pass, LocalDateTime lasttime, boolean isverify,
+    public User(String iduser, String name, String profilepic, String email, String pass, LocalDateTime lasttime,
+            boolean isverify,
             String verifylink) {
         this.iduser = iduser;
         this.name = name;
+        this.profilepic = profilepic;
         this.email = email;
         this.pass = pass;
         this.lasttime = lasttime;
@@ -99,6 +106,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getProfilepic() {
+        return this.profilepic;
+    }
+
+    public void setProfilepic(String profilepic) {
+        this.profilepic = profilepic;
     }
 
     public String getEmail() {
@@ -158,6 +173,7 @@ public class User {
         return "{" +
                 " iduser='" + getIduser() + "'" +
                 ", name='" + getName() + "'" +
+                ", profilepic='" + getProfilepic() + "'" +
                 ", email='" + getEmail() + "'" +
                 ", pass='" + getPass() + "'" +
                 ", lasttime='" + getLasttime() + "'" +
@@ -182,7 +198,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(iduser, name, email, pass, lasttime, isverify, verifylink);
+        return Objects.hash(iduser, name, profilepic, email, pass, lasttime, isverify, verifylink);
     }
 
 }

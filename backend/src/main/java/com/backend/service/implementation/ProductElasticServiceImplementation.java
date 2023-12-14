@@ -106,6 +106,16 @@ public class ProductElasticServiceImplementation implements ProductElasticServic
         return productsElastic;
     }
 
+    // Get products from Elasticsearch by name or description
+    @Override
+    public List<ProductElastic> searchProductsByNameOrDescription(String query) throws IOException {
+        List<ProductElastic> productsElastic = productElasticRepository.findByNameOrDescription(query);
+        if (productsElastic.isEmpty()) {
+            throw new EntityNotFoundException("No productsElastic found for query: " + query);
+        }
+        return productsElastic;
+    }
+
     // Validate the fields of a ProductElastic object
     private void validateProductElastic(ProductElastic productElastic) {
         if (productElastic == null) {

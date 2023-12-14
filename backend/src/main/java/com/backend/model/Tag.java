@@ -18,7 +18,7 @@ public class Tag {
     @Id
     private String idtag;
 
-    @Column(length = 45, nullable = false)
+    @Column(length = 512, nullable = false)
     private String name;
 
     // This is the many-to-many relationship between the Product and Tag tables

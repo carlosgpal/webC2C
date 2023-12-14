@@ -10,6 +10,7 @@ public class ProductDTO {
     private String name;
     private String description;
     private double price;
+    private double rating;
     private LocalDateTime date;
     private String place;
     private List<ImageDTO> images;
@@ -18,12 +19,14 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-    public ProductDTO(String idproduct, String name, String description, double price, LocalDateTime date, String place,
+    public ProductDTO(String idproduct, String name, String description, double price, double rating,
+            LocalDateTime date, String place,
             List<ImageDTO> images, List<TagDTO> tags) {
         this.idproduct = idproduct;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.rating = rating;
         this.date = date;
         this.place = place;
         this.images = images;
@@ -60,6 +63,14 @@ public class ProductDTO {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public double getRating() {
+        return this.rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
     public LocalDateTime getDate() {

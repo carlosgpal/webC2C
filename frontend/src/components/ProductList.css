@@ -1,0 +1,6 @@
+.cards-container {
+  height: calc(100vh - 0px);
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}

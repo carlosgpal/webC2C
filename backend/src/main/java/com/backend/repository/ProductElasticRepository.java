@@ -15,8 +15,9 @@ public interface ProductElasticRepository extends ElasticsearchRepository<Produc
 
     List<ProductElastic> findByUser(String user);
 
-    // This is a custom query that returns a list of products that match the ids of
-    // the tags passed
-    @Query("{\"nested\": {\"path\": \"tags\", \"query\": {\"terms\": {\"tags.tag_name\": ?0}}}}")
+    @Query("{\"nested\": {\"path\": \"tags\", \"query\": {\"terms\": {\"tags.tag_value\": ?0}}}}")
     List<ProductElastic> findByTagsIn(List<String> tags);
+
+    @Query("{\"multi_match\": {\"query\": \"?0\", \"fields\": [\"name\", \"description\"], \"type\": \"best_fields\"}}")
+    List<ProductElastic> findByNameOrDescription(String query);
 }

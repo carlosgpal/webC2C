@@ -47,30 +47,30 @@ public class MySQLServiceTest {
     TagDTO tag5 = new TagDTO("127", "tag");
 
     // Create product objects
-    ProductDTO product1 = new ProductDTO("1212", "chopsticks barato", "bueno bonito y barato", 0.5,
+    ProductDTO product1 = new ProductDTO("1212", "chopsticks barato", "bueno bonito y barato", 0.5, 4.6,
             LocalDateTime.of(2023, 11, 13, 12, 30, 0), "Aquí", List.of(image1, image2), List.of(tag1, tag2));
-    ProductDTO product2 = new ProductDTO("1213", "chopsticks caro", "buenobonitoycaro", 0.5,
+    ProductDTO product2 = new ProductDTO("1213", "chopsticks caro", "buenobonitoycaro", 0.5, 4.6,
             LocalDateTime.of(2023, 11, 13, 12, 30, 0), "Aquí", List.of(image3, image4, image5), List.of(tag4, tag2));
-    ProductDTO product3 = new ProductDTO("1214", "chopsticks medio", "bueno bonito y medio", 0.5,
+    ProductDTO product3 = new ProductDTO("1214", "chopsticks medio", "bueno bonito y medio", 0.5, 4.6,
             LocalDateTime.of(2023, 11, 13, 12, 30, 0), "Aquí", List.of(image1, image2, image3, image4, image5),
             List.of(tag5, tag3));
-    ProductDTO product4 = new ProductDTO("1215", "chopsticks barato", "bueno bonito y barato", 0.5,
+    ProductDTO product4 = new ProductDTO("1215", "chopsticks barato", "bueno bonito y barato", 0.5, 4.6,
             LocalDateTime.of(2023, 11, 13, 12, 30, 0), "Aquí", List.of(image1, image2), List.of(tag3, tag4, tag1));
-    ProductDTO product5 = new ProductDTO("1216", "chopsticks barato", "bueno bonito y barato", 0.5,
+    ProductDTO product5 = new ProductDTO("1216", "chopsticks barato", "bueno bonito y barato", 0.5, 4.6,
             LocalDateTime.of(2023, 11, 13, 12, 30, 0), "Aquí", List.of(image1, image2),
             List.of(tag1, tag2, tag3, tag4, tag5));
 
     // Create user objects
-    UserDTO jhon = new UserDTO("1", "Jhon", "Jhon@example.com", "pass1",
+    UserDTO jhon = new UserDTO("1", "Jhon", "https://profilepic.com", "Jhon@example.com", "pass1",
             LocalDateTime.of(2023, 11, 13, 12, 30, 0),
             true, "ads", List.of(product1));
-    UserDTO claire = new UserDTO("2", "Claire", "Claire@example.com", "pass2",
+    UserDTO claire = new UserDTO("2", "Claire", "https://profilepic.com", "Claire@example.com", "pass2",
             LocalDateTime.of(2023, 11, 13, 12, 30, 0), true, "ads", List.of(product2,
                     product3));
-    UserDTO juan = new UserDTO("3", "Juan", "Juan@example.com", "pass3",
+    UserDTO juan = new UserDTO("3", "Juan", "https://profilepic.com", "Juan@example.com", "pass3",
             LocalDateTime.of(2023, 11, 13, 12, 30, 0),
             true, "ads", List.of(product4, product5));
-    UserDTO fernando = new UserDTO("4", "Fernando", "Fernando@example.com",
+    UserDTO fernando = new UserDTO("4", "Fernando", "https://profilepic.com", "Fernando@example.com",
             "pass4",
             LocalDateTime.of(2023, 11, 13, 12, 30, 0), true, "ads",
             List.of(product2, product3, product4, product5));

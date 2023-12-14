@@ -15,4 +15,4 @@ spring:
   datasource:
     url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/webc2c-dev
     username: root
-    password: salchichon
+    password: root
