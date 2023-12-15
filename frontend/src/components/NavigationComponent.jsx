@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
-import LocalMall from '@mui/icons-material/LocalMall'
+import PersonIcon from '@mui/icons-material/Person';
 import ProductList from "./ProductList";
+import HomeIcon from '@mui/icons-material/Home';
+import ProfileComponent from './ProfileComponent';
 import './NavigationComponent.css';
 
 const NavigationComponent = () => {
@@ -14,16 +16,24 @@ const NavigationComponent = () => {
                 <div className={`menu-icon ${sidebarCollapsed ? 'menu-icon-collapsed' : ''}`} onClick={() => setSidebarCollapsed(!sidebarCollapsed)}>
                     <MenuRoundedIcon />
                 </div>
-                <Link to="/products" className="link">
-                    <LocalMall className="icon" />
-                    {!sidebarCollapsed && 'Productos'}
+                <Link to="/" className="link">
+                    <HomeIcon className="icon" />
+                    {!sidebarCollapsed && 'Home'}
+                </Link>
+                <Link to="/profile" className="link">
+                    <PersonIcon className="icon" />
+                    {!sidebarCollapsed && 'Profile'}
                 </Link>
             </div>
             <div className={`content ${sidebarCollapsed ? 'content-collapsed' : ''}`}>
                 <Routes>
-                    <Route path="/products" element={
+                    <Route path="/" element={
                         <ProductList>
                         </ProductList>
+                    } />
+                    <Route path="/profile" element={
+                        <ProfileComponent>
+                        </ProfileComponent>
                     } />
                 </Routes>
             </div>

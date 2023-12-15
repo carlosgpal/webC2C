@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Container, Badge, CardTitle } from "reactstrap";
-import { getAllProducts } from "../utils/apicalls.js";
+import { getAllProducts, searchProducts } from "../utils/apicalls.js";
 
-import Header from "./Header.jsx";
+import SearchComponent from "./SearchComponent.jsx";
 import CardProduct from "./CardProduct.jsx";
 import "./ProductList.css";
 
 export default function ProductList() {
     const [products, setProducts] = useState(null);
+
+    const handleSearch = (query) => {
+        searchProducts(query).then((newProducts) => {
+            setProducts(newProducts);
+        });
+    };
 
     const getProducts = () => {
         getAllProducts().then((products) => {
@@ -21,12 +27,12 @@ export default function ProductList() {
 
     return products === null ? (
         <div>
-            <Header />
+            <SearchComponent />
             <h1 className="loading-text">Loading...</h1>
         </div>
     ) : (
         <div>
-            <Header />
+            <SearchComponent onSearch={handleSearch} />
             <Container>
                 <CardTitle tag="h1" className="text-center">
                     <Badge pill color="dark">

@@ -4,7 +4,7 @@ import './CardProduct.css'
 
 export default function CardProduct({ product }) {
     // Destructure the props for easier access
-    const { name, date, place, idproduct, description, price, tags, thumbnailimg, image } = product;
+    const { name, date, place, idproduct, description, price, tags, rating, thumbnailimg } = product;
 
     // Function to render the tags
     const renderTags = (tags) => {
@@ -28,6 +28,7 @@ export default function CardProduct({ product }) {
                     <AiFillBank /> Price: {price}<br />
                     <AiTwotoneCalendar /> Date: {new Date(date).toLocaleDateString()}<br />
                     <AiFillSignal /> Place: {place}<br />
+                    <AiFillSignal /> Rating: {rating}<br />
                 </p>
                 <div>
                     {renderTags(tags)}
