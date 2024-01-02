@@ -4,8 +4,9 @@ import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import PersonIcon from '@mui/icons-material/Person';
 import ProductList from "./ProductList";
 import HomeIcon from '@mui/icons-material/Home';
+import CardDetails from './CardDetails';
 import ProfileComponent from './ProfileComponent';
-import './NavigationComponent.css';
+import './styles/NavigationComponent.css';
 
 const NavigationComponent = () => {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -30,6 +31,10 @@ const NavigationComponent = () => {
                     <Route path="/" element={
                         <ProductList>
                         </ProductList>
+                    } />
+                    <Route path="/product/:idproduct" element={
+                        <CardDetails>
+                        </CardDetails>
                     } />
                     <Route path="/profile" element={
                         <ProfileComponent>

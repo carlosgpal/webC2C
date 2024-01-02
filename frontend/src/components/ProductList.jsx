@@ -4,7 +4,7 @@ import { getAllProducts, searchProducts } from "../utils/apicalls.js";
 
 import SearchComponent from "./SearchComponent.jsx";
 import CardProduct from "./CardProduct.jsx";
-import "./ProductList.css";
+import "./styles/ProductList.css";
 
 export default function ProductList() {
     const [products, setProducts] = useState(null);

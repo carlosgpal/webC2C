@@ -1,12 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { AiFillEye, AiFillSignal, AiFillAppstore, AiTwotoneCalendar, AiOutlineStar, AiFillAlipayCircle, AiFillAmazonSquare, AiFillBank } from "react-icons/ai";
-import './CardProduct.css'
+import './styles/CardProduct.css'
 
 export default function CardProduct({ product }) {
-    // Destructure the props for easier access
     const { name, date, place, idproduct, description, price, tags, rating, thumbnailimg } = product;
 
-    // Function to render the tags
     const renderTags = (tags) => {
         return tags.map((tag, index) => (
             <div key={index} className="mb-1">
@@ -15,14 +14,17 @@ export default function CardProduct({ product }) {
         ));
     };
 
-    // Render the card product component
     return (
         <div className="cardProduct">
             <div className="card-image">
-                <img src={thumbnailimg} alt={name} />
+                <Link to={`/product/${idproduct}`}>
+                    <img src={thumbnailimg} alt={name} />
+                </Link>
             </div>
             <div className="card-body">
-                <h6 className="card-title">{name}</h6>
+                <h6 className="card-title">
+                    <Link to={`/product/${idproduct}`}>{name}</Link>
+                </h6>
                 <p className="card-info">
                     <AiFillAmazonSquare /> {description}<br />
                     <AiFillBank /> Price: {price}<br />
