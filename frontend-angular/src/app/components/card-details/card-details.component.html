@@ -1,0 +1,16 @@
+<div *ngIf="product">
+  {{ product.name }}
+  <p>{{ product.description }}</p>
+  <p>Price: ${{ product.price }}</p>
+  <p>Rating: {{ product.rating }} / 5</p>
+  <p>Date: {{ product.date | date }}</p>
+  <p>Place: {{ product.place }}</p>
+  <div *ngIf="product.images && product.images.length > 0">
+    <img
+      *ngFor="let image of product.images"
+      [src]="image.link"
+      [alt]="product.name"
+      class="product-image"
+    />
+  </div>
+</div>

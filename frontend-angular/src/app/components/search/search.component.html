@@ -1,0 +1,8 @@
+<div>
+  <input #searchQuery type="text" placeholder="Buscar productos..." />
+  <button (click)="searchProducts(searchQuery.value)">Buscar</button>
+</div>
+
+<div *ngFor="let product of products">
+  <app-card-product [product]="product"></app-card-product>
+</div>

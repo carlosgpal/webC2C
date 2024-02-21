@@ -1,0 +1,23 @@
+<!-- card-product.component.html -->
+<div class="cardProduct">
+  <div class="card-image">
+    <a [routerLink]="['/product', product.idproduct]">
+      <img [src]="product.thumbnailimg" [alt]="product.name" />
+    </a>
+  </div>
+  <div class="card-body">
+    <h6 class="card-title">
+      <a [routerLink]="['/product', product.idproduct]">{{ product.name }}</a>
+    </h6>
+    <p class="card-info">
+      {{ product.description }}<br />
+      Price: {{ product.price }}<br />
+      Date: {{ product.date | date }}<br />
+      Place: {{ product.place }}<br />
+      Rating: {{ product.rating }}<br />
+    </p>
+    <div *ngFor="let tag of product.tags; let i = index">
+      {{ tag.tag_name }}: {{ tag.tag_value }}<br />
+    </div>
+  </div>
+</div>

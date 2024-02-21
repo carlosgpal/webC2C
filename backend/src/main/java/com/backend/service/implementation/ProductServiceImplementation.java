@@ -25,6 +25,7 @@ import com.backend.service.exception.TechnicalException;
 
 // This is a service that implements the methods of the ProductService interface
 @Service
+// @Transactional
 public class ProductServiceImplementation implements ProductService {
 
     @Autowired
